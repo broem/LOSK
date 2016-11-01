@@ -3,4 +3,27 @@
  */
 public class input {
 
+    public void inputRead(String input) throws IllegalArgumentException{
+
+        switch(input){
+            case "LOAD": System.out.println("load");
+                break;
+            case "EXE": System.out.println("exe");
+                break;
+            case "PROC":
+                break;
+            case "MEM":
+                break;
+            case "EXIT":
+                break;
+            case "RESET":
+                break;
+
+        }
+
+
+
+    }
+
+
 }

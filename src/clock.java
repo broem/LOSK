@@ -3,8 +3,9 @@ public class clock extends cpu {
     
     private static int clockTime = 0;
     
-    private void exectue(){
-        
+    private void exectue() {
+
+
     }
     
     public int getClock(){
