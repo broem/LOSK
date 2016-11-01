@@ -18,6 +18,8 @@ public class input {
                 break;
             case "RESET":
                 break;
+            default: System.out.println("please enter valid command...");
+                break;
 
         }
 

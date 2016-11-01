@@ -1,7 +1,7 @@
 
 public class clock extends cpu {
     
-    private static int clockTime = 0;
+    private int clockTime = 0;
     
     private void exectue() {
 
@@ -9,6 +9,11 @@ public class clock extends cpu {
     }
     
     public int getClock(){
+        return clockTime;
+    }
+
+    public int setClock(int newTime){
+        clockTime = newTime;
         return clockTime;
     }
 

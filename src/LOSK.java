@@ -4,6 +4,9 @@ public class LOSK {
 
     public static void main(String[] args) {
         // TODO Auto-generated method stub
+        cpu ourCpu = new cpu();
+
+        ourCpu.advanceClock();
         input userType = new input();
 
         Scanner in = new Scanner(System.in);
@@ -18,10 +21,11 @@ public class LOSK {
         userType.inputRead(input);
 
 
-
-
-
-
     }
+
+    void initialize(){
+        cpu ourCpu = new cpu();
+    }
+
 
 }
