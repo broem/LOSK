@@ -14,6 +14,8 @@ public class input {
                 break;
             case "MEM":
                 break;
+            case "STOP":
+                break;
             case "EXIT":
                 break;
             case "RESET":

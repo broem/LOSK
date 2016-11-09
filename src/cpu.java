@@ -1,7 +1,7 @@
 
 public class cpu {
 
-    clock ourClock = new clock();
+    //clock ourClock = new clock();
 
     public cpu(){
 
@@ -11,7 +11,7 @@ public class cpu {
 
     
     public void advanceClock(int n){
-        ourClock.setClock(n);
+        //ourClock.setClock(n);
     }
     
     public void detectInterrupt(){
