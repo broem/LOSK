@@ -40,11 +40,11 @@ public class process {
             else if(in.next().equals("YIELD")){
                 setYeild(in.nextLine().trim());
             }
-            else if(in.next().equals("OUTPUT")){
+            else if(in.next().equals("OUT")){
                 setOut(in.nextLine().trim());
             }
             else if(in.next().equals("EXE")){
-
+                setExe(in.nextLine().trim());
             }
             else {
                 System.out.println("JOB FILE LINE ERROR");
@@ -75,6 +75,8 @@ public class process {
     public void setOut(String out){
         processArray.add(out);
     }
+
+    public void setExe(String exe){ processArray.add(exe);}
 
     public State getProcessState(){
         return state;
