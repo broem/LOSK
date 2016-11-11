@@ -3,23 +3,57 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
+// PCB
 public class process {
 
     private ArrayList<String> processArray = new ArrayList();
     private String ID;
-    private String calcTime;
-    private int time;
+//    private String calcTime;
+    private int runTime =0;
+
+
+    private enum State{ // will be used as flags for our newQueue in scheduler class
+        NEW, READY, RUN, WAIT, EXIT
+    }
+    State state;
+
 
     public process(File fileName) throws FileNotFoundException
     {
-
+        // add mem
+        // on initialize
+        setProcessState(state.NEW);
         Scanner in = new Scanner(fileName);
         ID = in.nextLine();
         setID(ID);
-        if(in.next().equals("CALCULATE")){
-            time = Integer.parseInt(in.nextLine().trim());
+        while(in.hasNextLine()) {
+            if (in.next().equals("CALCULATE")) {
+                String line = in.nextLine().trim();
+                setCalc(line);
+                String num = line.substring(10); //assume
+                int numPass = Integer.parseInt(num);
+                addRunTime(numPass);
+            }
+            else if(in.next().equals("IO")){
+                setIO(in.nextLine().trim());
+            }
+            else if(in.next().equals("YIELD")){
+                setYeild(in.nextLine().trim());
+            }
+            else if(in.next().equals("OUTPUT")){
+                setOut(in.nextLine().trim());
+            }
+            else if(in.next().equals("EXE")){
+
+            }
+            else {
+                System.out.println("JOB FILE LINE ERROR");
+            }
         }
+    }
+
+    public void setProcessState(State state){
+        this.state = state;
     }
 
     public void setID(String name){
@@ -41,6 +75,23 @@ public class process {
     public void setOut(String out){
         processArray.add(out);
     }
+
+    public State getProcessState(){
+        return state;
+    }
+
+    public int getMaxInstructionLength(){
+        return processArray.size();
+    }
+
+    private void addRunTime(int add){
+        runTime+=add;
+    }
+
+    public void updateRunTime(int update){
+        runTime-=update;
+    }
+
 
 
 

@@ -1,5 +1,7 @@
 
-public class interruptProcessor {
+public class interruptProcessor extends cpu{
+    // creates ECB
+    //
     
     private void signalInterrupt(){
         

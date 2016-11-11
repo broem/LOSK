@@ -1,11 +1,15 @@
+import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-public class eventQueue {
+public class eventQueue extends cpu{
 
-    public PriorityQueue<Integer> osQ = new PriorityQueue<>();
+    // priority queue binary heap
+
+    public LinkedList<process> osQ = new LinkedList<>();
     
-    public void enQueue(){
+    public void enQueue(process process){
+        osQ.add(process);
         
     }
     

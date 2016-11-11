@@ -1,9 +1,15 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
 /*
  * Schedules according to round robin
+ * creates an ECB
  */
 public abstract class scheduler {
     private static int q = 10; //quantum
-    
+    public LinkedList<String> readyQueue = new LinkedList<>();
+    public LinkedList<String> newQueue = new LinkedList<>();
+
     private void insertPCB(){
         
     }

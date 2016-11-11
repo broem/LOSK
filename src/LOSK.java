@@ -1,16 +1,22 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class LOSK {
 
+
+
     public static void main(String[] args) {
-        cpu ourCpu = new cpu();
+        File jobFile;
+        initialize();
+        eventQueue ourEventQueue = new eventQueue();
+        //cpu ourCpu = new cpu();
+        memory ourMemory = new memory();
 
         System.out.println("LOSK Running...");
 
         Scanner in = new Scanner(System.in);
         String input = "";
-
         //Tell user to get help
         System.out.println("Enter HELP for a list of commands...");
         System.out.println("====================================");
@@ -30,13 +36,25 @@ public class LOSK {
 
             switch(inputSeparated[0]){
                 case "LOAD":
-                    File jobFile = new File(inputSeparated[1]);
-                    if(jobFile.exists()) {
-                        System.out.println("File exists!");
-                        //Pass inputSeparated[1] which contains file name
-                    } else {
-                        System.out.println("File doesn't exist!");
+                    try {
+                        jobFile = new File(inputSeparated[1]);
+                        if(jobFile.exists()) {
+                            String name = inputSeparated[1];
+                            System.out.println("File exists!");
+                            process some = new process(jobFile);
+                            //add process to a queue somewhere in here?
+                            //Pass inputSeparated[1] which contains file name
+                        } else {
+                            System.out.println("File doesn't exist!");
+                        }
                     }
+                    catch (ArrayIndexOutOfBoundsException e){
+                        System.out.println("File name must be included...");
+                    }
+                    catch (FileNotFoundException e){
+                        System.out.println("File not found...");
+                    }
+
                     break;
                 case "EXE":
                     //Should check to be sure that the file has been loaded
@@ -57,6 +75,7 @@ public class LOSK {
                     break;
                 case "MEM":
                     //Shows current memory usage
+                    System.out.println(ourMemory.getMemory_left() + " bytes");
 
                     break;
                 case "EXIT":
@@ -80,8 +99,10 @@ public class LOSK {
         System.exit(0);
     }
 
-    void initialize(){
+    static void initialize(){
+        clock ourClock = new clock();
         cpu ourCpu = new cpu();
+
     }
 
 
