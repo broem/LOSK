@@ -5,10 +5,10 @@ import java.util.Queue;
  * Schedules according to round robin
  * creates an ECB
  */
-public abstract class scheduler {
+public class processScheduler {
     private static int q = 10; //quantum
-    public LinkedList<String> readyQueue = new LinkedList<>();
-    public LinkedList<String> newQueue = new LinkedList<>();
+    public LinkedList<process> readyQueue = new LinkedList<>();
+    public LinkedList<process> newQueue = new LinkedList<>();
 
     private void insertPCB(){
         
@@ -35,7 +35,7 @@ public abstract class scheduler {
     }
     
     public int getArrival(){
-        return 0;
+        return clock.get().getClock();
     }
     
     public void setArrival(int arrive){
@@ -43,11 +43,11 @@ public abstract class scheduler {
     }
     
     public int getCPUTime(){
-        return 0;
+        return clock.get().getClock();
     }
     
     public void setCPUTime(int setTime){
-        
+        clock.get().advanceClock(setTime);
     }
     
 }

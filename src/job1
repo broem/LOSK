@@ -1,0 +1,4 @@
+LOAD 2 LKword
+LOAD 20 LOSKbrowser
+LOAD 60 someFile
+LOAD 120 someOtherFile

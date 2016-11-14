@@ -9,7 +9,7 @@ public class LOSK {
     public static void main(String[] args) {
         File jobFile;
         initialize();
-        eventQueue ourEventQueue = new eventQueue();
+
         //cpu ourCpu = new cpu();
         memory ourMemory = new memory();
 
@@ -41,7 +41,7 @@ public class LOSK {
                         if(jobFile.exists()) {
                             String name = inputSeparated[1];
                             System.out.println("File exists!");
-                            process some = new process(jobFile);
+                            jobReader some = new jobReader(jobFile);
                             //add process to a queue somewhere in here?
                             //Pass inputSeparated[1] which contains file name
                         } else {
@@ -51,13 +51,11 @@ public class LOSK {
                     catch (ArrayIndexOutOfBoundsException e){
                         System.out.println("File name must be included...");
                     }
-                    catch (FileNotFoundException e){
-                        System.out.println("File not found...");
-                    }
 
                     break;
                 case "EXE":
                     //Should check to be sure that the file has been loaded
+                    //should check if queue is empty
                     /*
                         if(inputSeparated[1] has been loaded){
                             execute job

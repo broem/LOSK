@@ -8,6 +8,7 @@ public class process {
 
     private ArrayList<String> processArray = new ArrayList();
     private String ID;
+    private int cycle = 0;
 //    private String calcTime;
     private int runTime =0;
 
@@ -18,7 +19,7 @@ public class process {
     State state;
 
 
-    public process(File fileName) throws FileNotFoundException
+    public process(String fileName) throws FileNotFoundException
     {
         // add mem
         // on initialize
