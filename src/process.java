@@ -1,16 +1,24 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 // PCB
 public class process {
-
+    /*
+    Event Key:
+    1. IO
+    2. Yeild/Interrupt
+    3. Process
+     */
     private ArrayList<String> processArray = new ArrayList();
     private String ID;
     private int cycle = 0;
 //    private String calcTime;
     private int runTime =0;
+    private int io = 0;
+    private int PID;
 
 
     private enum State{ // will be used as flags for our newQueue in scheduler class
@@ -23,6 +31,7 @@ public class process {
     {
         // add mem
         // on initialize
+        PID = generatePID();
         setProcessState(state.NEW);
         Scanner in = new Scanner(fileName);
         ID = in.nextLine();
@@ -53,6 +62,10 @@ public class process {
         }
     }
 
+    private int generatePID(){
+        return new Random().nextInt(9000) + 1000;
+    }
+
     public void setProcessState(State state){
         this.state = state;
     }
@@ -66,18 +79,42 @@ public class process {
     }
 
     public void setYeild(String yeild){
+        addRunTime(1);
         processArray.add(yeild);
+        ECB yeildECB = new ECB(2, getPID(), 1, getRunTime()); // the passed 1 should be checked later
+        //TODO if event == 2 then size of 1 should just be an interrupt
     }
 
     public void setIO(String IO){
+        //assuming IOburst isnt known, for runtime
+        addRunTime(1); //for instruction
+        io = ioBurst.get().generateIOBurst();
         processArray.add(IO);
+        int num = getRunTime();
+        ECB ioECB = new ECB(1, getPID(), io, num);
+        ioScheduler.get().scheduleIO(ioECB);
+
+
+    }
+
+    public int getRunTime(){
+        return runTime;
+    }
+
+    public int getPID(){
+        return PID;
     }
 
     public void setOut(String out){
+        //TODO this should be an IO but does it get the generated burst time or just 1 cycle to display?
         processArray.add(out);
     }
 
     public void setExe(String exe){ processArray.add(exe);}
+
+//    public int getIOStartTime(){
+//    }
+
 
     public State getProcessState(){
         return state;
@@ -94,6 +131,8 @@ public class process {
     public void updateRunTime(int update){
         runTime-=update;
     }
+
+
 
 
 

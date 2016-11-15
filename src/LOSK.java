@@ -1,9 +1,12 @@
+import jdk.nashorn.internal.objects.Global;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class LOSK {
 
+    public int cycle = 0;
 
 
     public static void main(String[] args) {
@@ -11,7 +14,7 @@ public class LOSK {
         initialize();
 
         //cpu ourCpu = new cpu();
-        memory ourMemory = new memory();
+//        memory ourMemory = new memory();
 
         System.out.println("LOSK Running...");
 
@@ -73,7 +76,7 @@ public class LOSK {
                     break;
                 case "MEM":
                     //Shows current memory usage
-                    System.out.println(ourMemory.getMemory_left() + " bytes");
+                    System.out.println(memory.get().getMemory_left());
 
                     break;
                 case "EXIT":

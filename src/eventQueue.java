@@ -3,7 +3,7 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 public class eventQueue extends cpu{
-    private PriorityQueue<process> osQ = new PriorityQueue<>();
+    public PriorityQueue<ECB> osQ = new PriorityQueue<>();
 
     //singleton since we only ever need one
     private static eventQueue instance = null;
@@ -17,14 +17,18 @@ public class eventQueue extends cpu{
     }
 
 
-    public void enQueue(process process){
-        osQ.add(process);
+    public void enQueue(ECB incoming){
+        osQ.add(incoming);
 
     }
 
-    public void deQueue(process process){
-        osQ.remove(process);
+    public void deQueue(ECB outgoing){
+        osQ.remove(outgoing);
 
+    }
+
+    public int getSize(){
+        return osQ.size();
     }
 //    private static final int DEFAULT_CAPACITY = 1000;
 //    private int currentSize;      // Number of elements in heap

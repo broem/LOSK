@@ -1,7 +1,7 @@
 
 public class clock extends cpu {
 
-    private int clockTime = 0;
+    private int clockTime = 0; //is this cycle time?
 
     //singleton etc etc
     private static clock instance = null;

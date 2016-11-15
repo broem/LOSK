@@ -3,8 +3,15 @@ public class cpu {
 
 
 
-    public cpu(){
-
+    //singleton since we only ever need one
+    private static cpu instance = null;
+    protected cpu() {
+    }
+    public static cpu get() {
+        if(instance == null) {
+            instance = new cpu();
+        }
+        return instance;
     }
 
     
