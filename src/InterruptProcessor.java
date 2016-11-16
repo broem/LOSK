@@ -1,16 +1,14 @@
-import java.awt.*;
-
-public class interruptProcessor extends cpu{
+public class InterruptProcessor extends CPU {
     // creates ECB
     //
-    private static interruptProcessor instance = null;
+    private static InterruptProcessor instance = null;
     private static boolean interrupted;
-    private interruptProcessor() {
+    private InterruptProcessor() {
         interrupted = false;
     }
-    public static interruptProcessor get() {
+    public static InterruptProcessor get() {
         if(instance == null) {
-            instance = new interruptProcessor();
+            instance = new InterruptProcessor();
         }
         return instance;
     }
@@ -23,13 +21,13 @@ public class interruptProcessor extends cpu{
     // not sure if cycle time/ event time
 //    public void scanEventQueue(){
 //
-//        for(ECB e: eventQueue.get().osQ){
+//        for(ECB e: EventQueue.get().osQ){
 //            if(e.)
 //        }
 //    }
     
     public void addEvent(ECB event){
-        eventQueue.get().enQueue(event);
+        EventQueue.get().enQueue(event);
     }
     
     public int getEvent(){

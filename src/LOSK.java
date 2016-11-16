@@ -1,7 +1,4 @@
-import jdk.nashorn.internal.objects.Global;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class LOSK {
@@ -10,11 +7,18 @@ public class LOSK {
 
 
     public static void main(String[] args) {
+        /*EventQueue.invokeLater(() -> {
+            try {
+                GUI gui = new GUI();
+                gui.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });*/
+
         File jobFile;
         initialize();
-
-        //cpu ourCpu = new cpu();
-//        memory ourMemory = new memory();
 
         System.out.println("LOSK Running...");
 
@@ -30,7 +34,7 @@ public class LOSK {
         //Loop to handle command inputs
         while(run)
         {
-            //Marker for user input
+            //Marker for user Input
             System.out.print(">");
 
             //[0] = Command, [1] = If extra parameters needed, theyre included here
@@ -44,8 +48,8 @@ public class LOSK {
                         if(jobFile.exists()) {
                             String name = inputSeparated[1];
                             System.out.println("File exists!");
-                            jobReader some = new jobReader(jobFile);
-                            //add process to a queue somewhere in here?
+                            JobReader some = new JobReader(jobFile);
+                            //add Process to a queue somewhere in here?
                             //Pass inputSeparated[1] which contains file name
                         } else {
                             System.out.println("File doesn't exist!");
@@ -57,33 +61,20 @@ public class LOSK {
 
                     break;
                 case "EXE":
-                    //Should check to be sure that the file has been loaded
-                    //should check if queue is empty
-                    /*
-                        if(inputSeparated[1] has been loaded){
-                            execute job
-                        }
-                     */
-                    //Pass inputSeparated[1] which contains file name
                     System.out.println();
 
                     break;
-                case "PROC"://shows all unfinished processes in the system and their
-                            //information. The process information should include: current process
-                            //state, amount of CPU time needed to complete, amount of CPU time
-                            //already used, priority (if relevant), number of I/O requests performed.
-                    //This should be just a ton of calls to get() methods.
+                case "PROC":
                     break;
                 case "MEM":
-                    //Shows current memory usage
-                    System.out.println(memory.get().getMemory_left());
-
+                    //Shows current Memory usage
+                    System.out.println(Memory.get().getMemory_left());
                     break;
                 case "EXIT":
                     run = false;
                     break;
                 case "RESET":
-                    //All unfinished processes are terminated and clock set to 0
+                    //All unfinished processes are terminated and Clock set to 0
 
                     break;
                 case "HELP":
@@ -101,8 +92,8 @@ public class LOSK {
     }
 
     static void initialize(){
-        clock ourClock = new clock();
-        cpu ourCpu = new cpu();
+        Clock ourClock = new Clock();
+        CPU ourCpu = new CPU();
 
     }
 

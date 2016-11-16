@@ -1,7 +1,7 @@
 /*
- * Gets the user input from consol to work
+ * Gets the user Input from consol to work
  */
-public class input {
+public class Input {
 
     public void inputRead(String input) throws IllegalArgumentException{
 

@@ -1,14 +1,14 @@
 
-public class ioBurst {
+public class IOBurst {
 
-    //this comes in when IO is read in process!
+    //this comes in when IO is read in Process!
     //singleton since we only ever need one
-    private static ioBurst instance = null;
-    protected ioBurst() {
+    private static IOBurst instance = null;
+    protected IOBurst() {
     }
-    public static ioBurst get() {
+    public static IOBurst get() {
         if(instance == null) {
-            instance = new ioBurst();
+            instance = new IOBurst();
         }
         return instance;
     }

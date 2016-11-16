@@ -1,15 +1,15 @@
 
-public class clock extends cpu {
+public class Clock extends CPU {
 
     private int clockTime = 0; //is this cycle time?
 
     //singleton etc etc
-    private static clock instance = null;
-    protected clock() {
+    private static Clock instance = null;
+    protected Clock() {
     }
-    public static clock get() {
+    public static Clock get() {
         if(instance == null) {
-            instance = new clock();
+            instance = new Clock();
         }
         return instance;
     }

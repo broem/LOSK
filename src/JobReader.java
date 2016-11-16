@@ -3,14 +3,14 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class jobReader {
+public class JobReader {
     public int cycle = 0;
     String processID;
     int cycleToStart;
     ArrayList<Integer> processByCycle = new ArrayList<>();
     ArrayList<String> processByID = new ArrayList<>();
 
-    public jobReader(File jobFile){
+    public JobReader(File jobFile){
         boolean bs = true;
         try {
             Scanner in = new Scanner(jobFile);
@@ -36,7 +36,7 @@ public class jobReader {
     public void readyToLoad()throws FileNotFoundException{
         for(int i=0; i<processByCycle.size();i++){
             if(cycle == processByCycle.get(i)){
-                    process nextProcess = new process(processByID.get(i));
+                    Process nextProcess = new Process(processByID.get(i));
 
             }
         }

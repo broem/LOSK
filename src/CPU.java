@@ -1,22 +1,22 @@
 
-public class cpu {
+public class CPU {
 
 
 
     //singleton since we only ever need one
-    private static cpu instance = null;
-    protected cpu() {
+    private static CPU instance = null;
+    protected CPU() {
     }
-    public static cpu get() {
+    public static CPU get() {
         if(instance == null) {
-            instance = new cpu();
+            instance = new CPU();
         }
         return instance;
     }
 
     
     public void advanceClock(int n){
-        clock.get().setClockTime(n);
+        Clock.get().setClockTime(n);
     }
     
     public void detectInterrupt(){

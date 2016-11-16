@@ -1,20 +1,20 @@
 
-public class ioScheduler {
+public class IOScheduler {
 
     //creates ECB
     //singleton since we only ever need one
-    private static ioScheduler instance = null;
-    protected ioScheduler() {
+    private static IOScheduler instance = null;
+    protected IOScheduler() {
     }
-    public static ioScheduler get() {
+    public static IOScheduler get() {
         if(instance == null) {
-            instance = new ioScheduler();
+            instance = new IOScheduler();
         }
         return instance;
     }
     
     public void scheduleIO(ECB io){
-        eventQueue.get().enQueue(io);
+        EventQueue.get().enQueue(io);
     }
     
     public void startIO(){

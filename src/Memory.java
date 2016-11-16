@@ -1,15 +1,15 @@
 
-public class memory extends cpu{
+public class Memory extends CPU {
     private int memory_left = 256;
     private final int MAXMEM = 256;
 
     //make singleton
-    private static memory instance = null;
-    protected memory() {
+    private static Memory instance = null;
+    protected Memory() {
     }
-    public static memory get() {
+    public static Memory get() {
         if(instance == null) {
-            instance = new memory();
+            instance = new Memory();
         }
         return instance;
     }

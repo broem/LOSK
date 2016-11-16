@@ -1,6 +1,6 @@
 
 public class ECB {
-    private process p;
+    private Process p;
     private int event;
     private int pid;
     private int burst;
@@ -8,7 +8,7 @@ public class ECB {
 
 
     // this object will be added to eventQ
-    public ECB(process process, int event, int pid){ //basic
+    public ECB(Process process, int event, int pid){ //basic
         p = process;
         this.event = event;
         this.pid = pid;

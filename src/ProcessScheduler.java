@@ -1,14 +1,13 @@
 import java.util.LinkedList;
-import java.util.Queue;
 
 /*
  * Schedules according to round robin
  * creates an ECB
  */
-public class processScheduler {
+public class ProcessScheduler {
     private static int q = 10; //quantum
-    public LinkedList<process> readyQueue = new LinkedList<>();
-    public LinkedList<process> newQueue = new LinkedList<>();
+    public LinkedList<Process> readyQueue = new LinkedList<>();
+    public LinkedList<Process> newQueue = new LinkedList<>();
 
     private void insertPCB(){
         
@@ -35,7 +34,7 @@ public class processScheduler {
     }
     
     public int getArrival(){
-        return clock.get().getClock();
+        return Clock.get().getClock();
     }
     
     public void setArrival(int arrive){
@@ -43,11 +42,11 @@ public class processScheduler {
     }
     
     public int getCPUTime(){
-        return clock.get().getClock();
+        return Clock.get().getClock();
     }
     
     public void setCPUTime(int setTime){
-        clock.get().advanceClock(setTime);
+        Clock.get().advanceClock(setTime);
     }
     
 }
