@@ -17,7 +17,7 @@ public class ECB {
     public ECB(int event, int pid, int burst, int timeBegin){ //for IO
         this.event = event;
         this.pid = pid;
-        this.burst = burst;
+        this.burst = burst; // this is the duration
         begin = timeBegin; //important for scheduling
     }
 
