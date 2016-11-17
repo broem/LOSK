@@ -2,27 +2,45 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.TimerTask;
 
-public class JobReader {
+public class JobReader extends TimerTask {
+
+    private static JobReader instance = null;
+    private JobReader() {    }
+    public static JobReader get() {
+        if(instance == null) {
+            instance = new JobReader();
+        }
+        return instance;
+    }
+
     public int cycle = 0;
     String processID;
-    int cycleToStart;
+    //int cycleToStart;
     ArrayList<Integer> processByCycle = new ArrayList<>();
     ArrayList<String> processByID = new ArrayList<>();
 
-    public JobReader(File jobFile){
+    public void jobReaderIn(File jobFile){
         boolean bs = true;
         try {
             Scanner in = new Scanner(jobFile);
             while(in.hasNextLine() && bs) {
+
                 String load = in.next();
-                cycleToStart = in.nextInt();
-                String readableID = in.nextLine();
+                if(load.equals("EXE")){
+                    bs = false;
+                    break;
+                }
+                String cycleStart = in.next().trim();
+                int cycleToStart = Integer.parseInt(cycleStart);
+                cycleToStart += Clock.get().getClock(); // adjust when read in to clock time
+                String readableID = in.next();
+                in.nextLine();
+
                 processByCycle.add(cycleToStart);
                 processByID.add(readableID);
-                if(in.next() == "EXE"){
-                    bs = false;
-                }
+
             }
 
         } catch (FileNotFoundException e) {
@@ -35,16 +53,20 @@ public class JobReader {
 
     public void readyToLoad()throws FileNotFoundException{
         for(int i=0; i<processByCycle.size();i++){
-            if(cycle == processByCycle.get(i)){
+            if(Clock.get().getClock() == processByCycle.get(i)){
                     Process nextProcess = new Process(processByID.get(i));
+                    ProcessScheduler.get().insertPCB(nextProcess);
 
             }
         }
     }
 
-
-    public void updateCycle()throws FileNotFoundException{
-        cycle++;
-        readyToLoad();
+    public void run(){
+        try {
+            readyToLoad();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
+
 }

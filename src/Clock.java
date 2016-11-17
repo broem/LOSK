@@ -1,7 +1,8 @@
+import java.util.TimerTask;
 
-public class Clock extends CPU {
+public class Clock extends TimerTask {
 
-    private int clockTime = 0; //is this cycle time?
+    private int clockTime = 0; //is this cycle time? yes
 
     //singleton etc etc
     private static Clock instance = null;
@@ -13,8 +14,10 @@ public class Clock extends CPU {
         }
         return instance;
     }
-
-
+    @Override
+    public void run(){
+        clockTime++;
+    }
     
     private void execute(int newTime) {
         clockTime += newTime;

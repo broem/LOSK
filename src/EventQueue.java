@@ -14,6 +14,14 @@ public class EventQueue extends CPU {
         return instance;
     }
 
+    public ECB getEvent(int lookingFor){
+        for(ECB event: osQ){
+            if(event.getEvent() == lookingFor){
+                return event;
+            }
+        }
+        return null; // look at this
+    }
 
     public void enQueue(ECB incoming){
         osQ.add(incoming);

@@ -19,7 +19,7 @@ public class Process {
     private int runTime =0;
     private int io = 0;
     private int PID;
-
+    private int memoryReq=0;
     private int processState = 0;
     /*
     process States:
@@ -31,23 +31,20 @@ public class Process {
      */
 
 
-//    public enum State{ // will be used as flags for our newQueue in scheduler class
-//        NEW, READY, RUN, WAIT, EXIT
-//    }
-    processState pState = new processState();
-
-
     public Process(String fileName) throws FileNotFoundException
     {
         // add mem
         // on initialize
         // need to setup the current time and add cycles beyond that
+        System.out.println("YAY");
         runTime = getStartTime();
         PID = generatePID();
 
         Scanner in = new Scanner(fileName);
         ID = fileName;
         setID(ID);
+        memoryReq = in.nextInt();
+        in.nextLine();
         while(in.hasNextLine()) {
             if (in.next().equals("CALCULATE")) {
                 String line = in.nextLine().trim();
@@ -69,6 +66,7 @@ public class Process {
                 System.out.println("JOB FILE LINE ERROR");
             }
         }
+
     }
 
     private int generatePID(){
@@ -100,7 +98,7 @@ public class Process {
         //ioburst is added to runtime.
 
         int num = getRunTime();
-        io = ioBurst.get().generateIOBurst();
+        io = IOBurst.get().generateIOBurst();
         addRunTime(1+io); // add 1 to runtime for instruction read
         processArray.add(IO);
 
@@ -109,9 +107,13 @@ public class Process {
 
     }
 
+    public int getMemoryReq(){
+        return memoryReq;
+    }
+
     private int getStartTime(){
         //returns current clock time to allow for process to calculate starts for everything
-        return clock.get().getClock();
+        return Clock.get().getClock();
     }
 
     public int getRunTime(){

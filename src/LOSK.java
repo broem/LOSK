@@ -1,5 +1,10 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.Timer;
+
+import static sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte0.newThread;
+import static sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte0.runnable;
 
 public class LOSK {
 
@@ -16,11 +21,18 @@ public class LOSK {
             }
 
         });*/
-
         File jobFile;
         initialize();
 
         System.out.println("LOSK Running...");
+
+
+
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(Clock.get(), 1, 1000);
+        timer.scheduleAtFixedRate(JobReader.get(), 1, 1000);
+
+
 
         Scanner in = new Scanner(System.in);
         String input = "";
@@ -30,6 +42,11 @@ public class LOSK {
 
         //Should the simulation keep running
         boolean run = true;
+
+        Thread t = new Thread(Clock.get());
+            t.start();
+        Thread job = new Thread(JobReader.get());
+        job.start();
 
         //Loop to handle command inputs
         while(run)
@@ -48,7 +65,7 @@ public class LOSK {
                         if(jobFile.exists()) {
                             String name = inputSeparated[1];
                             System.out.println("File exists!");
-                            JobReader some = new JobReader(jobFile);
+                            JobReader.get().jobReaderIn(jobFile);
                             //add Process to a queue somewhere in here?
                             //Pass inputSeparated[1] which contains file name
                         } else {
@@ -62,9 +79,10 @@ public class LOSK {
                     break;
                 case "EXE":
                     System.out.println();
-
+                    // add runnable in here for the step portion, or if solo then just run!
                     break;
                 case "PROC":
+                    System.out.println(Clock.get().getClock() + " Clock time");
                     break;
                 case "MEM":
                     //Shows current Memory usage
@@ -85,6 +103,12 @@ public class LOSK {
                     break;
 
             }
+//            try {
+//                JobReader.get().updateCycle();
+//            }
+//            catch (FileNotFoundException e){
+//                e.printStackTrace();
+//            }
 
         }
         //InterruptScheduler, IOSCheduler, CPU calls here to check cycle time

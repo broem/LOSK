@@ -1,2 +1,2 @@
-LOAD 0 SampleJob.txt
+LOAD 2 SampleJob.txt
 EXE

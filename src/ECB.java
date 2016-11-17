@@ -21,8 +21,13 @@ public class ECB {
         begin = timeBegin; //important for scheduling
     }
 
+    public int getEvent(){return event;}
 
-//    public int getIOTime(){
+    public int getBegin() {
+        return begin;
+    }
+
+    //    public int getIOTime(){
 //        return p.ge
 //    }
 

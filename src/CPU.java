@@ -14,13 +14,18 @@ public class CPU {
         return instance;
     }
 
+    public void execute(Process p){
+        p.updateRunTime(1);
+    }
     
     public void advanceClock(int n){
         Clock.get().setClockTime(n);
     }
     
     public void detectInterrupt(){
-        
+        if(InterruptProcessor.get().getInterrupt()){
+
+        }
     }
     
     public void detectPreemption(){

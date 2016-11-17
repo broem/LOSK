@@ -1,4 +1,4 @@
-public class InterruptProcessor extends CPU {
+public class InterruptProcessor{
     // creates ECB
     //
     private static InterruptProcessor instance = null;
@@ -16,6 +16,14 @@ public class InterruptProcessor extends CPU {
     public void signalInterrupt(){
         interrupted = true;
         
+    }
+
+    public boolean getInterrupt(){
+        return interrupted;
+    }
+
+    public void resetInterrupt(){
+        interrupted = false;
     }
 
     // not sure if cycle time/ event time
