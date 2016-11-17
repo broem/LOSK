@@ -33,7 +33,7 @@ public class Process {
         PID = generatePID();
         setProcessState(state.NEW);
         Scanner in = new Scanner(fileName);
-        ID = in.nextLine();
+        ID = fileName;
         setID(ID);
         while(in.hasNextLine()) {
             if (in.next().equals("CALCULATE")) {
@@ -51,9 +51,6 @@ public class Process {
             }
             else if(in.next().equals("OUT")){
                 setOut(in.nextLine().trim());
-            }
-            else if(in.next().equals("EXE")){
-                setExe(in.nextLine().trim());
             }
             else {
                 System.out.println("JOB FILE LINE ERROR");

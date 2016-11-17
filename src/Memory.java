@@ -1,6 +1,6 @@
 
 public class Memory extends CPU {
-    private int memory_left = 256;
+    private int memoryLeft = 256;
     private final int MAXMEM = 256;
 
     //make singleton
@@ -14,13 +14,13 @@ public class Memory extends CPU {
         return instance;
     }
 
-    public void removeMemory_left(int memory_left) {
-        this.memory_left -= memory_left;
+    public void removeMemoryLeft(int memory_left) {
+        this.memoryLeft -= memory_left;
     }
 
-    public boolean addMemory_left(int memory_left){
-        if(this.memory_left + memory_left <= MAXMEM) {
-            this.memory_left += memory_left;
+    public boolean addMemoryLeft(int memory_left){
+        if(this.memoryLeft + memory_left <= MAXMEM) {
+            this.memoryLeft += memory_left;
             return true;
         }
         else{
@@ -29,7 +29,7 @@ public class Memory extends CPU {
 
     }
 
-    public int getMemory_left() {
-        return memory_left;
+    public int getMemoryLeft() {
+        return memoryLeft;
     }
 }

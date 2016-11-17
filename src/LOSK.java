@@ -68,10 +68,10 @@ public class LOSK {
                     break;
                 case "MEM":
                     //Shows current Memory usage
-                    System.out.println(Memory.get().getMemory_left());
+                    System.out.println(Memory.get().getMemoryLeft());
                     break;
                 case "EXIT":
-                    run = false;
+                    endLOSK();
                     break;
                 case "RESET":
                     //All unfinished processes are terminated and Clock set to 0
@@ -87,8 +87,9 @@ public class LOSK {
             }
 
         }
-        System.out.println("exiting LOSK...");
-        System.exit(0);
+        //InterruptScheduler, IOSCheduler, CPU calls here to check cycle time
+
+
     }
 
     static void initialize(){
@@ -96,6 +97,12 @@ public class LOSK {
         CPU ourCpu = new CPU();
 
     }
+
+    private static void endLOSK() {
+        System.out.println("exiting LOSK...");
+        System.exit(0);
+    }
+
 
 
 }
