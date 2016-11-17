@@ -6,19 +6,23 @@ import java.util.LinkedList;
  */
 public class ProcessScheduler {
     private static int q = 10; //quantum
-    public LinkedList<Process> readyQueue = new LinkedList<>();
-    public LinkedList<Process> newQueue = new LinkedList<>();
+//    public LinkedList<process> readyQueue = new LinkedList<>();
+//    public LinkedList<process> newQueue = new LinkedList<>();
 
-    private void insertPCB(){
+    public void insertPCB(process process){
+        // i think this adds to whatever queue it need to
+        if(getState(process) == 0){ //IE new
+            newQueue.get().add(process.getRunTime(), process);
+        }
         
     }
     
-    private void removePCB(){
+    public void removePCB(){
         
     }
     
-    public int getState(){
-        return 0;
+    public int getState(process process){
+        return process.getProcessState();
     }
     
     public void setState(int state){

@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -19,19 +20,31 @@ public class Process {
     private int io = 0;
     private int PID;
 
+    private int processState = 0;
+    /*
+    process States:
+    0 = new
+    1 = ready
+    2 = run
+    3 = wait
+    4 = exit
+     */
 
-    private enum State{ // will be used as flags for our newQueue in scheduler class
-        NEW, READY, RUN, WAIT, EXIT
-    }
-    State state;
+
+//    public enum State{ // will be used as flags for our newQueue in scheduler class
+//        NEW, READY, RUN, WAIT, EXIT
+//    }
+    processState pState = new processState();
 
 
     public Process(String fileName) throws FileNotFoundException
     {
         // add mem
         // on initialize
+        // need to setup the current time and add cycles beyond that
+        runTime = getStartTime();
         PID = generatePID();
-        setProcessState(state.NEW);
+
         Scanner in = new Scanner(fileName);
         ID = fileName;
         setID(ID);
@@ -62,9 +75,11 @@ public class Process {
         return new Random().nextInt(9000) + 1000;
     }
 
-    public void setProcessState(State state){
-        this.state = state;
+    public void setProcessState(int state){
+        this.processState = state;
     }
+
+
 
     public void setID(String name){
         processArray.add(name);
@@ -82,15 +97,21 @@ public class Process {
     }
 
     public void setIO(String IO){
-        //assuming IOburst isnt known, for runtime
-        addRunTime(1); //for instruction
-        io = IOBurst.get().generateIOBurst();
-        processArray.add(IO);
+        //ioburst is added to runtime.
+
         int num = getRunTime();
+        io = ioBurst.get().generateIOBurst();
+        addRunTime(1+io); // add 1 to runtime for instruction read
+        processArray.add(IO);
+
         ECB ioECB = new ECB(1, getPID(), io, num);
         IOScheduler.get().scheduleIO(ioECB);
 
+    }
 
+    private int getStartTime(){
+        //returns current clock time to allow for process to calculate starts for everything
+        return clock.get().getClock();
     }
 
     public int getRunTime(){
@@ -112,8 +133,8 @@ public class Process {
 //    }
 
 
-    public State getProcessState(){
-        return state;
+    public int getProcessState(){
+        return processState;
     }
 
     public int getMaxInstructionLength(){

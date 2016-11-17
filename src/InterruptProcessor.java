@@ -13,7 +13,7 @@ public class InterruptProcessor extends CPU {
         return instance;
     }
     
-    private void signalInterrupt(){
+    public void signalInterrupt(){
         interrupted = true;
         
     }
