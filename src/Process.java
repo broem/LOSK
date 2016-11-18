@@ -36,30 +36,33 @@ public class Process {
         // add mem
         // on initialize
         // need to setup the current time and add cycles beyond that
-        System.out.println("YAY");
         runTime = getStartTime();
         PID = generatePID();
 
-        Scanner in = new Scanner(fileName);
+        File processFile = new File(fileName);
+        Scanner in = new Scanner(processFile);
+
         ID = fileName;
         setID(ID);
-        memoryReq = in.nextInt();
-        in.nextLine();
+
+        String mem = in.nextLine().trim();
+        memoryReq = Integer.parseInt(mem);
+
         while(in.hasNextLine()) {
-            if (in.next().equals("CALCULATE")) {
-                String line = in.nextLine().trim();
-                setCalc(line);
-                String num = line.substring(10); //assume
+            String input = in.nextLine().trim();
+            if (input.contains("CALCULATE")) {
+                setCalc(input);
+                String num = input.substring(10); //assume
                 int numPass = Integer.parseInt(num);
                 addRunTime(numPass);
             }
-            else if(in.next().equals("IO")){
-                setIO(in.nextLine().trim());
+            else if(input.contains("IO")){
+                setIO(input);
             }
-            else if(in.next().equals("YIELD")){
+            else if(input.contains("YIELD")){
                 setYeild(in.nextLine().trim());
             }
-            else if(in.next().equals("OUT")){
+            else if(input.contains("OUT")){
                 setOut(in.nextLine().trim());
             }
             else {
