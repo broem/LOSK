@@ -1,6 +1,6 @@
 import java.util.LinkedList;
 
-public class ExeQueue {
+public class ExeQueue { // this entire class may be unnecessary
     private LinkedList<Process> exQ = new LinkedList<>();
 
     //singleton since only ever need one!

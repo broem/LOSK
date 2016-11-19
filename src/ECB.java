@@ -27,6 +27,15 @@ public class ECB {
         return begin;
     }
 
+    public void execute(int x){
+        if(burst > 0)
+        burst -= x;
+    }
+
+    public boolean complete(){
+        return burst == 0;
+    }
+
     //    public int getIOTime(){
 //        return p.ge
 //    }

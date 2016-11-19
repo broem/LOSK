@@ -3,24 +3,18 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.Timer;
 
-import static sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte0.newThread;
-import static sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte0.runnable;
 
 public class LOSK {
-
-    public int cycle = 0;
-
-
     public static void main(String[] args) {
-        /*EventQueue.invokeLater(() -> {
-            try {
-                GUI gui = new GUI();
-                gui.setVisible(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
-        });*/
+//            try {
+//                GUI gui = new GUI();
+//                gui.setVisible(true);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+        int cycle = 0;
+
         File jobFile;
         initialize();
 
@@ -33,7 +27,6 @@ public class LOSK {
         timer.scheduleAtFixedRate(JobReader.get(), 1, 1000);
 
 
-
         Scanner in = new Scanner(System.in);
         String input = "";
         //Tell user to get help
@@ -42,7 +35,6 @@ public class LOSK {
 
         //Should the simulation keep running
         boolean run = true;
-
         Thread t = new Thread(Clock.get());
             t.start();
         Thread job = new Thread(JobReader.get());
@@ -78,11 +70,19 @@ public class LOSK {
 
                     break;
                 case "EXE":
+
+                    if(inputSeparated.length == 2) {
+                        String temp = inputSeparated[1];
+                        cycle = Integer.parseInt(temp);
+                        exeRunForLength(cycle);
+                    }
                     System.out.println();
+                    ProcessScheduler.get().scheduleExe();
                     // add runnable in here for the step portion, or if solo then just run!
                     break;
                 case "PROC":
                     System.out.println(Clock.get().getClock() + " Clock time");
+                    System.out.println(ProcessScheduler.get().processesCurrentlyWaiting());
                     break;
                 case "MEM":
                     //Shows current Memory usage
@@ -103,6 +103,7 @@ public class LOSK {
                     break;
 
             }
+            //System.out.println(Memory.get().getMemoryLeft());
 //            try {
 //                JobReader.get().updateCycle();
 //            }
@@ -115,6 +116,20 @@ public class LOSK {
 
 
     }
+
+
+    public static void exeRun(){
+
+    }
+    public static void exeRunForLength(int cycles){
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(CycleClock.get(), 1, 1000);
+
+        if(CycleClock.get().getCycleTime() == cycles){
+            timer.cancel();
+        }
+    }
+
 
     static void initialize(){
         Clock ourClock = new Clock();
