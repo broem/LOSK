@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.TimerTask;
 
-public class JobReader extends TimerTask {
+public class JobReader {
 
     private static JobReader instance = null;
     private JobReader() {    }
@@ -59,14 +59,6 @@ public class JobReader extends TimerTask {
                     ProcessScheduler.get().insertPCB(nextProcess);
 
             }
-        }
-    }
-
-    public void run(){
-        try {
-            readyToLoad();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
     }
 

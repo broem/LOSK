@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 import java.util.TimerTask;
 
 public class Clock extends TimerTask {
@@ -17,6 +18,11 @@ public class Clock extends TimerTask {
     @Override
     public void run(){
         clockTime++;
+        try {
+            JobReader.get().readyToLoad();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
     
     private void execute(int newTime) {

@@ -13,7 +13,7 @@ public class LOSK {
 //            } catch (Exception e) {
 //                e.printStackTrace();
 //            }
-        int cycle = 0;
+        int cycle;
 
         File jobFile;
         initialize();
@@ -24,7 +24,7 @@ public class LOSK {
 
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(Clock.get(), 1, 1000);
-        timer.scheduleAtFixedRate(JobReader.get(), 1, 1000);
+        //timer.scheduleAtFixedRate(JobReader.get(), 1, 1000);
 
 
         Scanner in = new Scanner(System.in);
@@ -37,8 +37,8 @@ public class LOSK {
         boolean run = true;
         Thread t = new Thread(Clock.get());
             t.start();
-        Thread job = new Thread(JobReader.get());
-        job.start();
+        //Thread job = new Thread(JobReader.get());
+        //job.start();
 
         //Loop to handle command inputs
         while(run)
