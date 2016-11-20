@@ -1,7 +1,8 @@
+import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 public class EventQueue extends CPU {
-    public PriorityQueue<ECB> osQ = new PriorityQueue<>();
+    public LinkedList<ECB> osQ = new LinkedList<>();
 
     //singleton since we only ever need one
     private static EventQueue instance = null;
@@ -36,6 +37,8 @@ public class EventQueue extends CPU {
     public int getSize(){
         return osQ.size();
     }
+
+
 //    private static final int DEFAULT_CAPACITY = 1000;
 //    private int currentSize;      // Number of elements in heap
 //    private Comparable [ ] array; // The heap array

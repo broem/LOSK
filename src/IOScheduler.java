@@ -18,15 +18,10 @@ public class IOScheduler {
     }
     
     public void startIO(){ // make runnable so no need for while
-        while(true){
-            if(Clock.get().getClock() == EventQueue.get().getEvent(1).getBegin()){ //detects if IO/Yeild are matching times with clock, if so sig interrupt
-                InterruptProcessor.get().signalInterrupt();
-            }
-            if(Clock.get().getClock() == EventQueue.get().getEvent(2).getBegin()){
-                InterruptProcessor.get().signalInterrupt();
-            }
-        }
-
+            if(CycleClock.get().getCycleTime() == EventQueue.get().getEvent(1).getBegin()){ //detects if IO/Yeild are matching times with clock, if so sig interrupt
+                InterruptProcessor.get().signalInterrupt();}
+            if(CycleClock.get().getCycleTime() == EventQueue.get().getEvent(2).getBegin()){
+                InterruptProcessor.get().signalInterrupt();}
     }
     
 

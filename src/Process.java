@@ -11,6 +11,7 @@ public class Process {
     1. IO
     2. Yeild/Interrupt
     3. Process
+    4. Output
      */
     private ArrayList<String> processArray = new ArrayList();
     private String ID;
@@ -33,11 +34,12 @@ public class Process {
 
     public Process(String fileName) throws FileNotFoundException
     {
-        // add mem
         // on initialize
         // need to setup the current time and add cycles beyond that
-        runTime = getStartTime();
+        //runTime = getStartTime();
         PID = generatePID();
+
+        boolean base = true;
 
         File processFile = new File(fileName);
         Scanner in = new Scanner(processFile);
@@ -47,23 +49,31 @@ public class Process {
 
         String mem = in.nextLine().trim();
         memoryReq = Integer.parseInt(mem);
+        addRunTime(1); //for line read
 
-        while(in.hasNextLine()) {
+        while(in.hasNextLine() && base) {
             String input = in.nextLine().trim();
             if (input.contains("CALCULATE")) {
                 setCalc(input);
                 String num = input.substring(10); //assume
                 int numPass = Integer.parseInt(num);
-                addRunTime(numPass);
+                addRunTime(numPass+1);
             }
             else if(input.contains("IO")){
+                addRunTime(1);
                 setIO(input);
             }
             else if(input.contains("YIELD")){
+                addRunTime(1);
                 setYeild(in.nextLine().trim());
             }
             else if(input.contains("OUT")){
+                addRunTime(1);
                 setOut(in.nextLine().trim());
+            }
+            else if(input.contains("EXE")){
+                addRunTime(1);
+                base = false;
             }
             else {
                 System.out.println("JOB FILE LINE ERROR");
@@ -91,7 +101,6 @@ public class Process {
     }
 
     public void setYeild(String yeild){
-        addRunTime(1);
         processArray.add(yeild);
         ECB yeildECB = new ECB(2, getPID(), 1, getRunTime()); // the passed 1 should be checked later
         //TODO if event == 2 then size of 1 should just be an interrupt
@@ -102,7 +111,7 @@ public class Process {
 
         int num = getRunTime();
         io = IOBurst.get().generateIOBurst();
-        addRunTime(1+io); // add 1 to runtime for instruction read
+        //addRunTime(1); // add 1 to runtime for instruction read
         processArray.add(IO);
 
         ECB ioECB = new ECB(1, getPID(), io, num);
@@ -125,6 +134,10 @@ public class Process {
 
     public int getPID(){
         return PID;
+    }
+
+    public String getID(){
+        return ID;
     }
 
     public void setOut(String out){

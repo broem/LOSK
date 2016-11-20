@@ -5,7 +5,8 @@ import java.util.LinkedList;
  * creates an ECB
  */
 public class ProcessScheduler {
-    private static int q = 10; //quantum
+    private static int quantum = 10;
+    private int count = 10;
 
     private static ProcessScheduler instance = null;
     private ProcessScheduler() {    }
@@ -27,22 +28,53 @@ public class ProcessScheduler {
     }
     
     public void readyPCB(){ // this passes from new to ready if theres enough memory in system
-        if(newQueue.peek().getMemoryReq() < Memory.get().getMemoryLeft()){
-            readyQueue.addLast(newQueue.getLast());
+        while(!newQueue.isEmpty() && newQueue.peek().getMemoryReq() < Memory.get().getMemoryLeft()){
+            readyQueue.addLast(newQueue.getFirst()); // check this out make sure FIFO
+            newQueue.removeFirst();
             Memory.get().removeMemoryLeft(readyQueue.peek().getMemoryReq());
-            setState(readyQueue.peek(), 1);
+            setState(readyQueue.getLast(), 1);
         }
     }
 
     // Now we need to schedule
-    public Process scheduleExe(){
-        while(InterruptProcessor.get().getInterrupt()){
+    public void scheduleExe(){
+
+            readyPCB();
+            // if state is running send to CPU
+
+            if(!CPU.get().isCpuBusy() && count >0 && !readyQueue.isEmpty()) {
+                readyQueue.peekFirst().setProcessState(2); // for running
+                CPU.get().execute(readyQueue.peekFirst());
+                count--;
+                if(readyQueue.peek().getRunTime() ==0){
+                    System.out.println("Process " + readyQueue.peek().getID() + " completed at " + Clock.get().getClock());
+                }
+
+            }
+            if(count == 0){
+                readyQueue.peekFirst().setProcessState(1); //waiting, while waiting everything is paused.
+                Process processToMove = readyQueue.getFirst();
+                readyQueue.addLast(processToMove);
+                count = quantum;
+            }
             //round robin
-            return null;
-        }
-        return null;
+
+
     }
 
+    public void roundRobin(){
+
+    }
+
+    public String processesCurrentlyWaiting(){
+        int count = 0;
+        for(Process process: readyQueue){
+            if(process.getProcessState() == 1){
+                count++;//waiting
+            }
+        }
+        return "Wait Count: " + count;
+    }
 
 
     
@@ -51,14 +83,14 @@ public class ProcessScheduler {
     }
     
     public void setState(Process process ,int state){
-        
+        process.setProcessState(state);
     }
     
     public int getWait(){
         return 0;
     }
     
-    public void setWait(int time){
+    public void setWait(int time){ // IO/interrupt sends this back from cpu?!
         
     }
     
