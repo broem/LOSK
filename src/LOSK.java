@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -8,19 +9,21 @@ import static sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStat
 
 public class LOSK {
 
+    public static GUI gui;
     public int cycle = 0;
 
-
     public static void main(String[] args) {
-        /*EventQueue.invokeLater(() -> {
+
+        java.awt.EventQueue.invokeLater(() -> {
             try {
-                GUI gui = new GUI();
+                gui = new GUI();
                 gui.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-        });*/
+        });
+
         File jobFile;
         initialize();
 
@@ -44,9 +47,10 @@ public class LOSK {
         boolean run = true;
 
         Thread t = new Thread(Clock.get());
-            t.start();
+        t.start();
         Thread job = new Thread(JobReader.get());
         job.start();
+
 
         //Loop to handle command inputs
         while(run)
@@ -60,10 +64,12 @@ public class LOSK {
 
             switch(inputSeparated[0]){
                 case "LOAD":
+                    gui.appendLogArea("LOAD Detected");
+
                     try {
                         jobFile = new File(inputSeparated[1]);
                         if(jobFile.exists()) {
-                            String name = inputSeparated[1];
+//                            String name = inputSeparated[1];
                             System.out.println("File exists!");
                             JobReader.get().jobReaderIn(jobFile);
                             //add Process to a queue somewhere in here?

@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -9,7 +8,9 @@ import javax.swing.border.Border;
 public class GUI extends JFrame {
 
     private static JTextArea logArea;
-    private static JTextArea dataArea;
+    private static JTextArea processArea;
+    private static JTextArea simulationInfoArea;
+    private static String[] lastCommand;
 
     /**
      * Create the application.
@@ -23,7 +24,7 @@ public class GUI extends JFrame {
      */
     private void initialize() {
         setTitle("LOSK");
-        setBounds(100, 100, 625, 365);
+        setBounds(100, 100, 820, 365);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
 
@@ -45,31 +46,41 @@ public class GUI extends JFrame {
         logAreaScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         logAreaScrollPane.setBorder(border);
 
-        //Text area for info on processes
-        dataArea = new JTextArea("Processes Data Here");
-        dataArea.setEditable(false);
+        //Text area for general simulation info
+        simulationInfoArea = new JTextArea();
+        simulationInfoArea.setEditable(false);
+        simulationInfoArea.setBounds(615, 5, 200, 335);
+        simulationInfoArea.setBorder(border);
 
-        JScrollPane dataAreaScrollPane = new JScrollPane(dataArea);
-        dataAreaScrollPane.setBounds(320, 5, 300, 335);
-        dataAreaScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        dataAreaScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        dataAreaScrollPane.setBorder(border);
+        simulationInfoArea.append("Memory Left: ?");
+
+        //Text area for info on processes
+        processArea = new JTextArea("Processes Data Here");
+        processArea.setEditable(false);
+
+        JScrollPane processAreaScrollPane = new JScrollPane(processArea);
+        processAreaScrollPane.setBounds(310, 5, 300, 335);
+        processAreaScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        processAreaScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        processAreaScrollPane.setBorder(border);
 
         getContentPane().add(inputField);
         getContentPane().add(logAreaScrollPane);
-        getContentPane().add(dataAreaScrollPane);
+        getContentPane().add(processAreaScrollPane);
+        getContentPane().add(simulationInfoArea);
 
         inputField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                logArea.append(inputField.getText()+"\n");
+                lastCommand = inputField.getText().split(" ");
+                appendLogArea(inputField.getText());
                 inputField.setText("");
             }
         });
     }
 
     public void appendLogArea(String string){
-        logArea.append(string);
+        logArea.append(string+"\n");
     }
 
     public void clearLogArea(){
@@ -77,12 +88,17 @@ public class GUI extends JFrame {
     }
 
     public void appendDataArea(String string){
-        dataArea.append(string);
+        processArea.append(string);
     }
 
     public void clearDataArea(){
-        dataArea.setText("");
+        processArea.setText("");
     }
+
+    public String[] getLastCommand(){
+        return lastCommand;
+    }
+
 
     public void onEnter(){
         
