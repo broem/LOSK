@@ -51,9 +51,13 @@ public class ProcessScheduler {
                 }
 
             }
-            if(count == 0){
+//            if(CPU.get().isCpuBusy() && count > 0 && !readyQueue.isEmpty()){ TODO: ASK IF QUANTUM SHOULD BE RESET AFTER IO OR PREEMPTION
+//
+//            }
+            if(count == 0){ // context switch maybe +1 to cycle count?
                 readyQueue.peekFirst().setProcessState(1); //waiting, while waiting everything is paused.
                 Process processToMove = readyQueue.getFirst();
+                readyQueue.removeFirst();
                 readyQueue.addLast(processToMove);
                 count = quantum;
             }
@@ -65,6 +69,28 @@ public class ProcessScheduler {
     public void roundRobin(){
 
     }
+
+    public String processRunning(){ // should only EVER be 1
+        int count = 0;
+        for(Process process: readyQueue){
+            if(process.getProcessState() == 2){
+                count++;//waiting
+            }
+        }
+        return "Run Count: " + count;
+    }
+
+
+    public String processesInNew(){
+        int count = 0;
+        for(Process process: newQueue){
+            if(process.getProcessState() == 0){
+                count++;//waiting
+            }
+        }
+        return "New Count: " + count;
+    }
+
 
     public String processesCurrentlyWaiting(){
         int count = 0;

@@ -53,6 +53,7 @@ public class LOSK {
             switch(inputSeparated[0]){
                 case "LOAD":
                     try {
+
                         jobFile = new File(inputSeparated[1]);
                         if(jobFile.exists()) {
                             String name = inputSeparated[1];
@@ -74,15 +75,18 @@ public class LOSK {
                     if(inputSeparated.length == 2) {
                         String temp = inputSeparated[1];
                         cycle = Integer.parseInt(temp);
-                        exeRunForLength(cycle);
+                        CycleClock.get().setCycleStopTime(cycle);
+                        exeRunForLength();
                     }
                     System.out.println();
-                    ProcessScheduler.get().scheduleExe();
+                    //ProcessScheduler.get().scheduleExe();
                     // add runnable in here for the step portion, or if solo then just run!
                     break;
                 case "PROC":
                     System.out.println(Clock.get().getClock() + " Clock time");
                     System.out.println(ProcessScheduler.get().processesCurrentlyWaiting());
+                    System.out.println(ProcessScheduler.get().processesInNew());
+                    System.out.println(ProcessScheduler.get().processRunning());
                     break;
                 case "MEM":
                     //Shows current Memory usage
@@ -121,13 +125,11 @@ public class LOSK {
     public static void exeRun(){
 
     }
-    public static void exeRunForLength(int cycles){
+    public static void exeRunForLength(){
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(CycleClock.get(), 1, 1000);
-
-        if(CycleClock.get().getCycleTime() == cycles){
-            timer.cancel();
-        }
+        Thread t = new Thread(Clock.get());
+        t.start();
     }
 
 

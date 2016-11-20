@@ -3,6 +3,7 @@ import java.util.TimerTask;
 public class CycleClock extends TimerTask {
     // this is where all IO comparisons happen...its real
     private int clockTime;
+    private int cycleStop;
 
     //singleton etc etc
     private static CycleClock instance = null;
@@ -16,15 +17,22 @@ public class CycleClock extends TimerTask {
     }
     @Override
     public void run(){
+        if(clockTime == cycleStop){
+            System.out.println("Finished Execution!");
+            this.cancel();
+        }
         clockTime++;
+        ProcessScheduler.get().scheduleExe();
+        IOScheduler.get().startIO();
     }
 
     public int getCycleTime(){
         return clockTime;
     }
 
-    public void setCycleTime(int n){
-        clockTime+=n;
+    public void setCycleStopTime(int n){
+
+        cycleStop = clockTime+n;
     }
 
 }

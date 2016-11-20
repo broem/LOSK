@@ -55,6 +55,7 @@ public class JobReader extends TimerTask {
         for(int i=0; i<processByCycle.size();i++){
             if(Clock.get().getClock() == processByCycle.get(i)){
                     Process nextProcess = new Process(processByID.get(i));
+                System.out.println("Inserting process " + nextProcess.getPID());
                     ProcessScheduler.get().insertPCB(nextProcess);
 
             }

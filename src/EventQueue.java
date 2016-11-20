@@ -15,7 +15,7 @@ public class EventQueue extends CPU {
         return instance;
     }
 
-    public ECB getEvent(int lookingFor){
+    public ECB getEvent(int lookingFor){ //retun index?!
         for(ECB event: osQ){
             if(event.getEvent() == lookingFor){
                 return event;
@@ -23,6 +23,17 @@ public class EventQueue extends CPU {
         }
         return null; // look at this
     }
+
+    public ECB getEventWithCycleTime(int lookingFor, int cycleTime){
+        for(ECB event: osQ){
+            if(event.getEvent() == lookingFor && event.getBegin() == cycleTime){
+                return event;
+            }
+        }
+        return null; // this should never return null since we've already assured the existance
+    }
+
+
 
     public void enQueue(ECB incoming){
         osQ.add(incoming);

@@ -4,6 +4,7 @@ public class CPU {
 
     //singleton since we only ever need one
     private static boolean cpuBusy;
+    private static boolean ioState;
     private static CPU instance = null;
     protected CPU() { cpuBusy = false;
     }
@@ -28,6 +29,7 @@ public class CPU {
 
     public void executeIO(ECB ecb){
         cpuBusy = true;
+        ioState = true;
         while(!ecb.complete()){
         ecb.execute(1);}
         //finish it up
@@ -35,6 +37,7 @@ public class CPU {
             InterruptProcessor.get().resetInterrupt();
             EventQueue.get().deQueue(ecb);
             cpuBusy = false;
+            ioState = false;
         }
     }
     
@@ -54,7 +57,10 @@ public class CPU {
     public boolean isCpuBusy(){
         return cpuBusy;
     }
-    
+
+    public boolean cpuIsInIoState(){
+        return ioState;
+    }
     
     
 }
