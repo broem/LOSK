@@ -24,7 +24,7 @@ public class EventQueue extends CPU {
         return null; // look at this
     }
 
-    public ECB getEventWithCycleTime(int lookingFor, int cycleTime){
+    public ECB getEventWithCycleTime(int lookingFor, int cycleTime){ //this needs to be looked at for IO buildups
         for(ECB event: osQ){
             if(event.getEvent() == lookingFor && event.getBegin() == cycleTime){
                 return event;

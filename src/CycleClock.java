@@ -4,7 +4,7 @@ public class CycleClock extends TimerTask {
     // this is where all IO comparisons happen...its real
     private int clockTime;
     private int cycleStop;
-
+    private boolean ableToRun;
     //singleton etc etc
     private static CycleClock instance = null;
     protected CycleClock() {
@@ -17,13 +17,24 @@ public class CycleClock extends TimerTask {
     }
     @Override
     public void run(){
-        if(clockTime == cycleStop){
-            System.out.println("Finished Execution!");
-            this.cancel();
+        if(getRun()) {
+            if (clockTime == cycleStop) {
+                System.out.println("Finished Execution!");
+                setIsRunning(false);
+
+            }
+            clockTime++;
+            ProcessScheduler.get().scheduleExe();
+            IOScheduler.get().startIO();
         }
-        clockTime++;
-        ProcessScheduler.get().scheduleExe();
-        IOScheduler.get().startIO();
+    }
+
+    public boolean getRun(){
+        return ableToRun;
+    }
+
+    public void setIsRunning(boolean run){
+        ableToRun = run;
     }
 
     public int getCycleTime(){

@@ -22,9 +22,13 @@ public class LOSK {
 
 
 
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(Clock.get(), 1, 1000);
+        Timer clockTimer = new Timer();
+        clockTimer.scheduleAtFixedRate(Clock.get(), 1, 1000);
         //timer.scheduleAtFixedRate(JobReader.get(), 1, 1000);
+        Timer cycleTimer = new Timer();
+        cycleTimer.scheduleAtFixedRate(CycleClock.get(), 1, 1000);
+        Thread t1 = new Thread(CycleClock.get());
+        t1.start();
 
 
         Scanner in = new Scanner(System.in);
@@ -76,7 +80,7 @@ public class LOSK {
                         String temp = inputSeparated[1];
                         cycle = Integer.parseInt(temp);
                         CycleClock.get().setCycleStopTime(cycle);
-                        exeRunForLength();
+                        CycleClock.get().setIsRunning(true);
                     }
                     System.out.println();
                     //ProcessScheduler.get().scheduleExe();
@@ -87,6 +91,7 @@ public class LOSK {
                     System.out.println(ProcessScheduler.get().processesCurrentlyWaiting());
                     System.out.println(ProcessScheduler.get().processesInNew());
                     System.out.println(ProcessScheduler.get().processRunning());
+                    System.out.println("Cycle time: " + CycleClock.get().getCycleTime());
                     break;
                 case "MEM":
                     //Shows current Memory usage
@@ -125,12 +130,12 @@ public class LOSK {
     public static void exeRun(){
 
     }
-    public static void exeRunForLength(){
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(CycleClock.get(), 1, 1000);
-        Thread t = new Thread(Clock.get());
-        t.start();
-    }
+//    public static void exeRunForLength(){
+//        Timer timer = new Timer();
+//        timer.scheduleAtFixedRate(CycleClock.get(), 1, 1000);
+//        Thread t = new Thread(CycleClock.get());
+//        t.start();
+//    }
 
 
     static void initialize(){

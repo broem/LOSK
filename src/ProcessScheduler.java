@@ -2,7 +2,7 @@ import java.util.LinkedList;
 
 /*
  * Schedules according to round robin
- * creates an ECB
+ *
  */
 public class ProcessScheduler {
     private static int quantum = 10;
@@ -28,7 +28,7 @@ public class ProcessScheduler {
     }
     
     public void readyPCB(){ // this passes from new to ready if theres enough memory in system
-        while(!newQueue.isEmpty() && newQueue.peek().getMemoryReq() < Memory.get().getMemoryLeft()){
+        while(!newQueue.isEmpty() && newQueue.peek().getMemoryReq() <= Memory.get().getMemoryLeft()){
             readyQueue.addLast(newQueue.getFirst()); // check this out make sure FIFO
             newQueue.removeFirst();
             Memory.get().removeMemoryLeft(readyQueue.peek().getMemoryReq());
@@ -41,13 +41,25 @@ public class ProcessScheduler {
 
             readyPCB();
             // if state is running send to CPU
+        if(!CPU.get().processRunning()){ //sets process to waiting if not already done so
+            readyQueue.peekFirst().setProcessState(1);
+        }
+
 
             if(!CPU.get().isCpuBusy() && count >0 && !readyQueue.isEmpty()) {
+                if(readyQueue.peekFirst().getProcessState() != 5)
                 readyQueue.peekFirst().setProcessState(2); // for running
                 CPU.get().execute(readyQueue.peekFirst());
                 count--;
+                if(readyQueue.peekFirst().getProcessState() == 5) //it has been preempted by a YEILD
+                {
+                    //swap the current first, move to last, reset count
+                    roundRobin();
+                    count = quantum;
+                }
                 if(readyQueue.peek().getRunTime() ==0){
                     System.out.println("Process " + readyQueue.peek().getID() + " completed at " + Clock.get().getClock());
+                    readyQueue.removeFirst();
                 }
 
             }
@@ -56,9 +68,7 @@ public class ProcessScheduler {
 //            }
             if(count == 0){ // context switch maybe +1 to cycle count?
                 readyQueue.peekFirst().setProcessState(1); //waiting, while waiting everything is paused.
-                Process processToMove = readyQueue.getFirst();
-                readyQueue.removeFirst();
-                readyQueue.addLast(processToMove);
+                roundRobin();
                 count = quantum;
             }
             //round robin
@@ -67,8 +77,11 @@ public class ProcessScheduler {
     }
 
     public void roundRobin(){
-
+        Process processToMove = readyQueue.getFirst();
+        readyQueue.removeFirst();
+        readyQueue.addLast(processToMove);
     }
+
 
     public String processRunning(){ // should only EVER be 1
         int count = 0;

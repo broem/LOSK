@@ -27,8 +27,9 @@ public class Process {
     0 = new
     1 = ready
     2 = run
-    3 = wait
+    3 = wait not used...
     4 = exit
+    5 = currently preempted
      */
 
 
@@ -65,11 +66,11 @@ public class Process {
             }
             else if(input.contains("YIELD")){
                 addRunTime(1);
-                setYeild(in.nextLine().trim());
+                setYeild(input);
             }
             else if(input.contains("OUT")){
                 addRunTime(1);
-                setOut(in.nextLine().trim());
+                setOut(input);
             }
             else if(input.contains("EXE")){
                 addRunTime(1);
@@ -102,14 +103,16 @@ public class Process {
 
     public void setYeild(String yeild){
         processArray.add(yeild);
-        ECB yeildECB = new ECB(2, getPID(), 1, getRunTime()); // the passed 1 should be checked later
+        int num = getRunTime() + CycleClock.get().getCycleTime();
+        ECB yeildECB = new ECB(2, getPID(), 1, num); // the passed 1 should be checked later
         //TODO if event == 2 then size of 1 should just be an interrupt
+        IOScheduler.get().scheduleIO(yeildECB);
     }
 
     public void setIO(String IO){
         //ioburst is added to runtime.
 
-        int num = getRunTime();
+        int num = getRunTime() + CycleClock.get().getCycleTime(); // account for added jobs later on
         io = IOBurst.get().generateIOBurst();
         //addRunTime(1); // add 1 to runtime for instruction read
         processArray.add(IO);
@@ -143,6 +146,15 @@ public class Process {
     public void setOut(String out){
         //TODO this should be an IO but does it get the generated burst time or just 1 cycle to display?
         processArray.add(out);
+
+        String display = out.replaceAll(".*\\\"|\\\".*", "");
+
+
+        int num = getRunTime() + CycleClock.get().getCycleTime(); // account for added jobs later on
+        io = IOBurst.get().generateIOBurst();
+
+        ECB ioECB = new ECB(4, getPID(), io, num, display);
+        IOScheduler.get().scheduleIO(ioECB);
     }
 
     public void setExe(String exe){ processArray.add(exe);}

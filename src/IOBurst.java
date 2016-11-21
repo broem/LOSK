@@ -1,3 +1,4 @@
+import java.util.Random;
 
 public class IOBurst {
 
@@ -14,7 +15,7 @@ public class IOBurst {
     }
 
     public int generateIOBurst(){
-        int burst = (int) (Math.random()*50+25); //returns random between 25-50
+        int burst = new Random().nextInt(25)+25; //returns random between 25-50
         return burst;
     }
 }

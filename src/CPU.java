@@ -5,6 +5,7 @@ public class CPU {
     //singleton since we only ever need one
     private static boolean cpuBusy;
     private static boolean ioState;
+    private static boolean isProcessRunning;
     private static CPU instance = null;
     protected CPU() { cpuBusy = false;
     }
@@ -17,12 +18,16 @@ public class CPU {
 
     public void execute(Process p){ // add quantum to run from here?
         //cpuBusy = true;
-        p.updateRunTime(1);
+        p.updateRunTime(1); //if in ioState
+        isProcessRunning = true;
 
         if(detectInterrupt()){
-            p.setProcessState(2); //waiting/ready
+            p.setProcessState(1); //waiting/ready
             cpuBusy = true;
             //ProcessScheduler.get().scheduleExe();
+        }
+        if(detectPreemption()){
+            p.setProcessState(5);
         }
         }
 
@@ -30,14 +35,23 @@ public class CPU {
     public void executeIO(ECB ecb){
         cpuBusy = true;
         ioState = true;
-        while(!ecb.complete()){
+
+        if(isProcessRunning){
+            isProcessRunning = false;
+        }
+
+        if(!ecb.complete()){
         ecb.execute(1);}
         //finish it up
         if(ecb.complete()){
-            InterruptProcessor.get().resetInterrupt();
+            InterruptProcessor.get().resetInterrupt(); //combine these two
+            InterruptProcessor.get().resetPreemption();
             EventQueue.get().deQueue(ecb);
             cpuBusy = false;
             ioState = false;
+            if(ecb.getEvent() == 4){
+                System.out.println(ecb.getOutput());
+            }
         }
     }
     
@@ -50,8 +64,8 @@ public class CPU {
 
     }
     
-    public void detectPreemption(){
-        
+    public boolean detectPreemption(){
+        return (InterruptProcessor.get().getPreemption());
     }
 
     public boolean isCpuBusy(){
@@ -61,6 +75,12 @@ public class CPU {
     public boolean cpuIsInIoState(){
         return ioState;
     }
-    
-    
+
+    public boolean processRunning(){
+        return isProcessRunning;
+    }
+
+    public String getIoRunning(){
+        return "hmm";
+    }
 }

@@ -1,8 +1,10 @@
+import java.util.ArrayList;
 
 public class IOScheduler {
 
     //creates ECB
     //singleton since we only ever need one
+    private ECB currentlyRunning;
     private static IOScheduler instance = null;
     protected IOScheduler() {
     }
@@ -17,16 +19,36 @@ public class IOScheduler {
         EventQueue.get().enQueue(io);
     }
     
-    public void startIO(){ // make runnable so no need for while
+    public void startIO(){
         //check if IO is already happening
-        if(!CPU.get().cpuIsInIoState() && EventQueue.get().getEvent(2) != null) {
-            if (CycleClock.get().getCycleTime() == EventQueue.get().getEvent(1).getBegin()) { //1 detects if IO are matching times with clock, if so sig interrupt
-                InterruptProcessor.get().signalInterrupt();
-                CPU.get().executeIO(EventQueue.get().getEventWithCycleTime(1,CycleClock.get().getCycleTime()));
+        if(currentlyRunning != null){
+            CPU.get().executeIO(currentlyRunning);
+            if(currentlyRunning.complete()){
+                currentlyRunning = null;
             }
-            if (CycleClock.get().getCycleTime() == EventQueue.get().getEvent(2).getBegin()) { //2 detects yeild
+        }
+
+        if(!CPU.get().cpuIsInIoState() && EventQueue.get().getEvent(2) != null) { //need to see if this can be changed
+
+            //IO
+            if (CycleClock.get().getCycleTime() >= EventQueue.get().getEvent(1).getBegin()) { //1 detects if IO are matching times with clock, if so sig interrupt
                 InterruptProcessor.get().signalInterrupt();
-                CPU.get().executeIO(EventQueue.get().getEventWithCycleTime(2,CycleClock.get().getCycleTime()));
+                currentlyRunning = EventQueue.get().getEventWithCycleTime(1,CycleClock.get().getCycleTime());
+                CPU.get().executeIO(currentlyRunning);
+            }
+
+            // YIELD
+            if (CycleClock.get().getCycleTime() >= EventQueue.get().getEvent(2).getBegin() && !CPU.get().cpuIsInIoState()) { //2 detects yeild
+                InterruptProcessor.get().signalPreemption();
+                currentlyRunning = EventQueue.get().getEventWithCycleTime(2,CycleClock.get().getCycleTime());
+                CPU.get().executeIO(currentlyRunning);
+            }
+
+            // OUT
+            if(CycleClock.get().getCycleTime() >= EventQueue.get().getEvent(4).getBegin()&& !CPU.get().cpuIsInIoState()){
+                InterruptProcessor.get().signalInterrupt();
+                currentlyRunning = EventQueue.get().getEventWithCycleTime(4,CycleClock.get().getCycleTime());
+                CPU.get().executeIO(currentlyRunning);
             }
         }
         }

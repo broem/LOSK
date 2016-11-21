@@ -3,6 +3,7 @@ public class InterruptProcessor{
     //
     private static InterruptProcessor instance = null;
     private static boolean interrupted;
+    private static boolean preempted;
     private InterruptProcessor() {
         interrupted = false;
     }
@@ -15,9 +16,22 @@ public class InterruptProcessor{
     
     public void signalInterrupt(){
         interrupted = true;
+        System.out.println("Interrupt signalled!");
         
     }
 
+    public void signalPreemption(){
+        preempted = true;
+        System.out.println("PREEMPTION");
+
+    }
+
+    public boolean getPreemption(){
+        return preempted;
+    }
+    public void resetPreemption(){
+        preempted = false;
+    }
     public boolean getInterrupt(){
         return interrupted;
     }
