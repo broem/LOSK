@@ -1,8 +1,11 @@
 import java.util.LinkedList;
 import java.util.PriorityQueue;
+import java.util.Comparator;
 
 public class EventQueue extends CPU {
-    public LinkedList<ECB> osQ = new LinkedList<>();
+
+    public Comparator<ECB> comparator = new StartTimeComparator();
+    public PriorityQueue<ECB> osQ = new PriorityQueue<>(100, comparator);
 
     //singleton since we only ever need one
     private static EventQueue instance = null;
@@ -15,13 +18,17 @@ public class EventQueue extends CPU {
         return instance;
     }
 
-    public ECB getEvent(int lookingFor){ //retun index?!
-        for(ECB event: osQ){
-            if(event.getEvent() == lookingFor){
-                return event;
-            }
-        }
-        return null; // look at this
+//    public ECB getEvent(int lookingFor){ //retun index?!
+//        for(ECB event: osQ){
+//            if(event.getEvent() == lookingFor){
+//                return event;
+//            }
+//        }
+//        return null; // look at this
+//    }
+
+    public int getSoonestEvent(){
+        return osQ.peek().getEvent();
     }
 
     public ECB getEventWithCycleTime(int lookingFor, int cycleTime){ //this needs to be looked at for IO buildups
@@ -33,7 +40,17 @@ public class EventQueue extends CPU {
         return null; // this should never return null since we've already assured the existance
     }
 
+    public ECB getSoonest(){
+        return osQ.element();
+    }
 
+    public int getSoonestTime(){
+        return osQ.peek().getBegin();
+    }
+
+    public boolean isEmpty(){
+        return osQ.isEmpty();
+    }
 
     public void enQueue(ECB incoming){
         osQ.add(incoming);

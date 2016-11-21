@@ -147,7 +147,7 @@ public class Process {
         //TODO this should be an IO but does it get the generated burst time or just 1 cycle to display?
         processArray.add(out);
 
-        String display = out.replaceAll(".*\\\"|\\\".*", "");
+        String display = out;
 
 
         int num = getRunTime() + CycleClock.get().getCycleTime(); // account for added jobs later on

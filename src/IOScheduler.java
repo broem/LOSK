@@ -27,29 +27,44 @@ public class IOScheduler {
                 currentlyRunning = null;
             }
         }
-
-        if(!CPU.get().cpuIsInIoState() && EventQueue.get().getEvent(2) != null) { //need to see if this can be changed
-
-            //IO
-            if (CycleClock.get().getCycleTime() >= EventQueue.get().getEvent(1).getBegin()) { //1 detects if IO are matching times with clock, if so sig interrupt
+        if(currentlyRunning == null && !EventQueue.get().isEmpty() && CycleClock.get().getCycleTime() >= EventQueue.get().getSoonestTime()){
+            if(EventQueue.get().getSoonestEvent() == 1){
                 InterruptProcessor.get().signalInterrupt();
-                currentlyRunning = EventQueue.get().getEventWithCycleTime(1,CycleClock.get().getCycleTime());
-                CPU.get().executeIO(currentlyRunning);
+                currentlyRunning = EventQueue.get().getSoonest();
+                // not executing here gives a 1 cycle delay for context switch?
             }
-
-            // YIELD
-            if (CycleClock.get().getCycleTime() >= EventQueue.get().getEvent(2).getBegin() && !CPU.get().cpuIsInIoState()) { //2 detects yeild
+            if(EventQueue.get().getSoonestEvent() == 2){
                 InterruptProcessor.get().signalPreemption();
-                currentlyRunning = EventQueue.get().getEventWithCycleTime(2,CycleClock.get().getCycleTime());
-                CPU.get().executeIO(currentlyRunning);
+                currentlyRunning = EventQueue.get().getSoonest();
             }
-
-            // OUT
-            if(CycleClock.get().getCycleTime() >= EventQueue.get().getEvent(4).getBegin()&& !CPU.get().cpuIsInIoState()){
+            if(EventQueue.get().getSoonestEvent() == 4){
                 InterruptProcessor.get().signalInterrupt();
-                currentlyRunning = EventQueue.get().getEventWithCycleTime(4,CycleClock.get().getCycleTime());
-                CPU.get().executeIO(currentlyRunning);
+                currentlyRunning = EventQueue.get().getSoonest();
             }
         }
+
+//        if(!CPU.get().cpuIsInIoState() && EventQueue.get().getEvent(2) != null) { //need to see if this can be changed
+//
+//            //IO
+//            if (CycleClock.get().getCycleTime() >= EventQueue.get().getEvent(1).getBegin()) { //1 detects if IO are matching times with clock, if so sig interrupt
+//                InterruptProcessor.get().signalInterrupt();
+//                currentlyRunning = EventQueue.get().getEventWithCycleTime(1,CycleClock.get().getCycleTime());
+//                CPU.get().executeIO(currentlyRunning);
+//            }
+//
+//            // YIELD
+//            if (CycleClock.get().getCycleTime() >= EventQueue.get().getEvent(2).getBegin() && !CPU.get().cpuIsInIoState()) { //2 detects yeild
+//                InterruptProcessor.get().signalPreemption();
+//                currentlyRunning = EventQueue.get().getEventWithCycleTime(2,CycleClock.get().getCycleTime());
+//                CPU.get().executeIO(currentlyRunning);
+//            }
+//
+//            // OUT
+//            if(CycleClock.get().getCycleTime() >= EventQueue.get().getEvent(4).getBegin()&& !CPU.get().cpuIsInIoState()){
+//                InterruptProcessor.get().signalInterrupt();
+//                currentlyRunning = EventQueue.get().getEventWithCycleTime(4,CycleClock.get().getCycleTime());
+//                CPU.get().executeIO(currentlyRunning);
+//            }
+//        }
         }
 }
