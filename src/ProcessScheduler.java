@@ -53,11 +53,12 @@ public class ProcessScheduler {
                 count--;
                 if(readyQueue.peekFirst().getProcessState() == 5) //it has been preempted by a YEILD
                 {
+                    readyQueue.peekFirst().setProcessState(1);
                     //swap the current first, move to last, reset count
                     roundRobin();
                     count = quantum;
                 }
-                if(readyQueue.peek().getRunTime() ==0){
+                if(readyQueue.peek().getRunTime() ==0){ //this does not account for IO
                     System.out.println("Process " + readyQueue.peek().getID() + " completed at " + Clock.get().getClock());
                     readyQueue.removeFirst();
                 }
