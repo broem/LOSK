@@ -1,8 +1,11 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.*;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import javax.swing.border.Border;
 
 public class GUI extends JFrame {
@@ -75,8 +78,82 @@ public class GUI extends JFrame {
                 lastCommand = inputField.getText().split(" ");
                 appendLogArea(inputField.getText());
                 inputField.setText("");
+
+
+                switch(lastCommand[0]){
+                    case "LOAD":
+                        try {
+                            File jobFile = new File(lastCommand[1]);
+                            if(jobFile.exists()) {
+                                String name = lastCommand[1];
+                                appendLogArea("File exists!");
+                                JobReader.get().jobReaderIn(jobFile);
+                                //add Process to a queue somewhere in here?
+                                //Pass inputSeparated[1] which contains file name
+                            } else {
+                                appendLogArea("File doesn't exist!");
+                            }
+                        }
+                        catch (ArrayIndexOutOfBoundsException exception){
+                            appendLogArea("File name must be included...");
+                        }
+
+                        break;
+                    case "EXE":
+                        if(lastCommand.length == 2) {
+                            String temp = lastCommand[1];
+                            LOSK.setCycle(Integer.parseInt(temp));
+                            CycleClock.get().setCycleStopTime(LOSK.getCycle());
+                            CycleClock.get().setIsRunning(true);
+                        }
+                        /*
+                        if(lastCommand.length == 2) {
+                            exeRunForLength(Integer.parseInt(lastCommand[1]));
+                        }
+                        appendLogArea("");
+                        ProcessScheduler.get().scheduleExe();
+                        // add runnable in here for the step portion, or if solo then just run!
+                        */
+                        break;
+                    case "PROC":
+                        appendLogArea(Clock.get().getClock() + " Clock time");
+                        appendLogArea(ProcessScheduler.get().processesCurrentlyWaiting());
+                        break;
+                    case "MEM":
+                        //Shows current Memory usage
+                        appendLogArea(Integer.toString(Memory.get().getMemoryLeft()));
+                        break;
+                    case "EXIT":
+                        endLOSK();
+                        break;
+                    case "RESET":
+                        //All unfinished processes are terminated and Clock set to 0
+
+                        break;
+                    case "HELP":
+                        appendLogArea("List of commands:");
+                        appendLogArea("-LOAD + FileName.txt,\n-EXE + FileName.txt,\n-MEM,\n-EXIT,\n-RESET");
+                        break;
+                    default: appendLogArea("Please enter valid command...");
+                        break;
+
+                }
             }
         });
+    }
+
+    public void endLOSK() {
+        appendLogArea("Exiting LOSK...");
+        System.exit(0);
+    }
+
+    public static void exeRunForLength(int cycles){
+        java.util.Timer timer = new java.util.Timer();
+        timer.scheduleAtFixedRate(CycleClock.get(), 1, 1000);
+
+        if(CycleClock.get().getCycleTime() == cycles){
+            timer.cancel();
+        }
     }
 
     public void appendLogArea(String string){
@@ -98,7 +175,6 @@ public class GUI extends JFrame {
     public String[] getLastCommand(){
         return lastCommand;
     }
-
 
     public void onEnter(){
         

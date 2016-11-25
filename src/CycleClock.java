@@ -1,6 +1,9 @@
 import java.util.TimerTask;
 
 public class CycleClock extends TimerTask {
+
+    private GUI gui = LOSK.getGUI();
+
     // this is where all IO comparisons happen...its real
     private int clockTime;
     private int cycleStop;
@@ -20,6 +23,7 @@ public class CycleClock extends TimerTask {
         if(getRun()) {
             if (clockTime == cycleStop) {
                 System.out.println("Finished Execution!");
+                gui.appendLogArea("Finished Execution!");
                 setIsRunning(false);
 
             }

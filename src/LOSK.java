@@ -1,26 +1,28 @@
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.Timer;
 
 
 public class LOSK {
+
+    public static GUI gui;
+    private static int cycle;
+
     public static void main(String[] args) {
 
-//            try {
-//                GUI gui = new GUI();
-//                gui.setVisible(true);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-        int cycle;
+        try {
+            gui = new GUI();
+            gui.setVisible(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+//        int cycle;
 
         File jobFile;
         initialize();
 
-        System.out.println("LOSK Running...");
-
-
+        gui.appendLogArea("LOSK Running...");
 
         Timer clockTimer = new Timer();
         clockTimer.scheduleAtFixedRate(Clock.get(), 1, 1000);
@@ -75,7 +77,6 @@ public class LOSK {
 
                     break;
                 case "EXE":
-
                     if(inputSeparated.length == 2) {
                         String temp = inputSeparated[1];
                         cycle = Integer.parseInt(temp);
@@ -137,6 +138,13 @@ public class LOSK {
 //        t.start();
 //    }
 
+    public static int getCycle(){
+        return cycle;
+    }
+
+    public static void setCycle(int c){
+        cycle = c;
+    }
 
     static void initialize(){
         Clock ourClock = new Clock();
@@ -147,6 +155,12 @@ public class LOSK {
     private static void endLOSK() {
         System.out.println("exiting LOSK...");
         System.exit(0);
+    }
+
+    public static GUI getGUI(){
+        if(gui == null)
+            gui = new GUI();
+        return gui;
     }
 
 

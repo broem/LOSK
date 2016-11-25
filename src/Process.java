@@ -13,6 +13,9 @@ public class Process {
     3. Process
     4. Output
      */
+
+    private GUI gui = LOSK.getGUI();
+
     private ArrayList<String> processArray = new ArrayList();
     private String ID;
     private int cycle = 0;
@@ -22,6 +25,7 @@ public class Process {
     private int PID;
     private int memoryReq=0;
     private int processState = 0;
+
     /*
     process States:
     0 = new
@@ -78,6 +82,7 @@ public class Process {
             }
             else {
                 System.out.println("JOB FILE LINE ERROR");
+                gui.appendLogArea("JOB FILE LINE ERROR");
             }
         }
 

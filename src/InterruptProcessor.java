@@ -1,6 +1,9 @@
 public class InterruptProcessor{
     // creates ECB
     //
+
+    private GUI gui = LOSK.getGUI();
+
     private static InterruptProcessor instance = null;
     private static boolean interrupted;
     private static boolean preempted;
@@ -17,13 +20,14 @@ public class InterruptProcessor{
     public void signalInterrupt(){
         interrupted = true;
         System.out.println("Interrupt signalled!");
+        gui.appendLogArea("Interrupt signalled!");
         
     }
 
     public void signalPreemption(){
         preempted = true;
         System.out.println("PREEMPTION");
-
+        gui.appendLogArea("PREEMPTION");
     }
 
     public boolean getPreemption(){

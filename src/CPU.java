@@ -2,6 +2,8 @@ import java.awt.*;
 
 public class CPU {
 
+    private GUI gui = LOSK.getGUI();
+
     //singleton since we only ever need one
     private static boolean cpuBusy;
     private static boolean ioState;
@@ -51,6 +53,7 @@ public class CPU {
             ioState = false;
             if(ecb.getEvent() == 4){
                 System.out.println(ecb.getOutput());
+                gui.appendLogArea(ecb.getOutput());
             }
         }
     }

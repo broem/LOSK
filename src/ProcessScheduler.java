@@ -5,6 +5,9 @@ import java.util.LinkedList;
  *
  */
 public class ProcessScheduler {
+
+    private GUI gui = LOSK.getGUI();
+
     private static int quantum = 10;
     private int count = 10;
 
@@ -60,6 +63,7 @@ public class ProcessScheduler {
                 }
                 if(readyQueue.peek().getRunTime() ==0){ //this does not account for IO
                     System.out.println("Process " + readyQueue.peek().getID() + " completed at " + Clock.get().getClock());
+                    gui.appendLogArea("Process " + readyQueue.peek().getID() + " completed at " + Clock.get().getClock());
                     readyQueue.removeFirst();
                 }
 

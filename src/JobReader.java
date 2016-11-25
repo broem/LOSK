@@ -6,6 +6,8 @@ import java.util.TimerTask;
 
 public class JobReader {
 
+    private GUI gui = LOSK.getGUI();
+
     private static JobReader instance = null;
     private JobReader() {    }
     public static JobReader get() {
@@ -54,9 +56,10 @@ public class JobReader {
     public void readyToLoad()throws FileNotFoundException{
         for(int i=0; i<processByCycle.size();i++){
             if(Clock.get().getClock() == processByCycle.get(i)){
-                    Process nextProcess = new Process(processByID.get(i));
+                Process nextProcess = new Process(processByID.get(i));
                 System.out.println("Inserting process " + nextProcess.getPID());
-                    ProcessScheduler.get().insertPCB(nextProcess);
+                gui.appendLogArea("Inserting process " + nextProcess.getPID());
+                ProcessScheduler.get().insertPCB(nextProcess);
 
             }
         }
