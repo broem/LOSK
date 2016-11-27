@@ -20,14 +20,14 @@ public class InterruptProcessor{
     public void signalInterrupt(){
         interrupted = true;
         System.out.println("Interrupt signalled!");
-        gui.appendLogArea("Interrupt signalled!");
+        gui.appendLogArea("LogUpdate: Interrupt signalled!");
         
     }
 
     public void signalPreemption(){
         preempted = true;
         System.out.println("PREEMPTION");
-        gui.appendLogArea("PREEMPTION");
+        gui.appendLogArea("LogUpdate: Preemption");
     }
 
     public boolean getPreemption(){

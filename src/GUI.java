@@ -82,6 +82,7 @@ public class GUI extends JFrame {
 
                 switch(lastCommand[0]){
                     case "LOAD":
+                        appendLogArea("===LOAD Results===");
                         try {
                             File jobFile = new File(lastCommand[1]);
                             if(jobFile.exists()) {
@@ -97,6 +98,7 @@ public class GUI extends JFrame {
                         catch (ArrayIndexOutOfBoundsException exception){
                             appendLogArea("File name must be included...");
                         }
+                        appendLogArea("-----");
 
                         break;
                     case "EXE":
@@ -106,6 +108,7 @@ public class GUI extends JFrame {
                             CycleClock.get().setCycleStopTime(LOSK.getCycle());
                             CycleClock.get().setIsRunning(true);
                         }
+                        appendLogArea("===Executing===");
                         /*
                         if(lastCommand.length == 2) {
                             exeRunForLength(Integer.parseInt(lastCommand[1]));
@@ -116,23 +119,33 @@ public class GUI extends JFrame {
                         */
                         break;
                     case "PROC":
+                        appendLogArea("===PROC Results===");
                         appendLogArea(Clock.get().getClock() + " Clock time");
                         appendLogArea(ProcessScheduler.get().processesCurrentlyWaiting());
+                        appendLogArea(ProcessScheduler.get().processesInNew());
+                        appendLogArea(ProcessScheduler.get().processRunning());
+                        appendLogArea("Cycle time: " + CycleClock.get().getCycleTime());
+                        appendLogArea("-----");
                         break;
                     case "MEM":
                         //Shows current Memory usage
+                        appendLogArea("===MEM Results===");
                         appendLogArea(Integer.toString(Memory.get().getMemoryLeft()));
+                        appendLogArea("-----");
                         break;
                     case "EXIT":
                         endLOSK();
                         break;
                     case "RESET":
                         //All unfinished processes are terminated and Clock set to 0
-
+                        clearLogArea();
+                        appendLogArea("===\nSimulation Reset\n===");
                         break;
                     case "HELP":
+                        appendLogArea("===HELP Results===");
                         appendLogArea("List of commands:");
                         appendLogArea("-LOAD + FileName.txt,\n-EXE + FileName.txt,\n-MEM,\n-EXIT,\n-RESET");
+                        appendLogArea("-----");
                         break;
                     default: appendLogArea("Please enter valid command...");
                         break;
@@ -147,14 +160,14 @@ public class GUI extends JFrame {
         System.exit(0);
     }
 
-    public static void exeRunForLength(int cycles){
-        java.util.Timer timer = new java.util.Timer();
-        timer.scheduleAtFixedRate(CycleClock.get(), 1, 1000);
-
-        if(CycleClock.get().getCycleTime() == cycles){
-            timer.cancel();
-        }
-    }
+//    public static void exeRunForLength(int cycles){
+//        java.util.Timer timer = new java.util.Timer();
+//        timer.scheduleAtFixedRate(CycleClock.get(), 1, 1000);
+//
+//        if(CycleClock.get().getCycleTime() == cycles){
+//            timer.cancel();
+//        }
+//    }
 
     public void appendLogArea(String string){
         logArea.append(string+"\n");
@@ -165,11 +178,19 @@ public class GUI extends JFrame {
     }
 
     public void appendDataArea(String string){
-        processArea.append(string);
+        processArea.append(string+"\n");
     }
 
     public void clearDataArea(){
         processArea.setText("");
+    }
+
+    public void appendSimulationInfoArea(String string) {
+        simulationInfoArea.append(string+"\n");
+    }
+
+    public void clearSimulationInfoArea() {
+        simulationInfoArea.setText("");
     }
 
     public String[] getLastCommand(){

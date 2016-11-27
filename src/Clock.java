@@ -4,6 +4,7 @@ import java.util.TimerTask;
 public class Clock extends TimerTask {
 
     private int clockTime = 0; //is this cycle time? yes
+    private GUI gui = LOSK.getGUI();
 
     //singleton etc etc
     private static Clock instance = null;
@@ -23,6 +24,18 @@ public class Clock extends TimerTask {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        //Updating simulation information table in GUI
+        gui.clearSimulationInfoArea();
+        gui.appendSimulationInfoArea(Clock.get().getClock() + " Clock time");
+        gui.appendSimulationInfoArea(ProcessScheduler.get().processesCurrentlyWaiting());
+        gui.appendSimulationInfoArea(ProcessScheduler.get().processesInNew());
+        gui.appendSimulationInfoArea(ProcessScheduler.get().processRunning());
+        gui.appendSimulationInfoArea("Cycle time: " + CycleClock.get().getCycleTime());
+        gui.appendSimulationInfoArea("Memory left: " + Memory.get().getMemoryLeft());
+
+        //Updating processes information table in GUI
+        ProcessScheduler.get().updateProcessesLog();
     }
     
     private void execute(int newTime) {

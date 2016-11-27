@@ -19,6 +19,7 @@ public class ProcessScheduler {
         }
         return instance;
     }
+
     public LinkedList<Process> readyQueue = new LinkedList<>();
     public LinkedList<Process> newQueue = new LinkedList<>(); // should check memory before sending to ready
 
@@ -120,7 +121,32 @@ public class ProcessScheduler {
         return "Wait Count: " + count;
     }
 
+    /*
+    process States:
+    0 = new
+    1 = ready
+    2 = run
+    3 = wait not used...
+    4 = exit
+    5 = currently preempted
+     */
 
+    public void updateProcessesLog(){
+        gui.clearDataArea();
+        for(Process process: readyQueue){
+            if(process.getProcessState() == 2){
+                gui.appendDataArea(process.getID() + " : Running");
+            }
+            if(process.getProcessState() == 1){
+                gui.appendDataArea(process.getID() + " : Ready");
+            }
+        }
+        for(Process process: newQueue){
+            if(process.getProcessState() == 0){
+                gui.appendDataArea(process.getID() + " : New");
+            }
+        }
+    }
     
     public int getState(Process process){
         return process.getProcessState();
