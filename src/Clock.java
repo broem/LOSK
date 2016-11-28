@@ -1,4 +1,5 @@
 import java.io.FileNotFoundException;
+import java.util.ConcurrentModificationException;
 import java.util.TimerTask;
 
 public class Clock extends TimerTask {
@@ -26,16 +27,24 @@ public class Clock extends TimerTask {
         }
 
         //Updating simulation information table in GUI
-        gui.clearSimulationInfoArea();
-        gui.appendSimulationInfoArea(Clock.get().getClock() + " Clock time");
-        gui.appendSimulationInfoArea(ProcessScheduler.get().processesCurrentlyWaiting());
-        gui.appendSimulationInfoArea(ProcessScheduler.get().processesInNew());
-        gui.appendSimulationInfoArea(ProcessScheduler.get().processRunning());
-        gui.appendSimulationInfoArea("Cycle time: " + CycleClock.get().getCycleTime());
-        gui.appendSimulationInfoArea("Memory left: " + Memory.get().getMemoryLeft());
+        try {
+            gui.clearSimulationInfoArea();
+            gui.appendSimulationInfoArea(Clock.get().getClock() + " Clock time");
+            gui.appendSimulationInfoArea(ProcessScheduler.get().processesCurrentlyWaiting());
+            gui.appendSimulationInfoArea(ProcessScheduler.get().processesInNew());
+            gui.appendSimulationInfoArea(ProcessScheduler.get().processRunning());
+            gui.appendSimulationInfoArea("Cycle time: " + CycleClock.get().getCycleTime());
+            gui.appendSimulationInfoArea("Memory left: " + Memory.get().getMemoryLeft());
 
-        //Updating processes information table in GUI
-        ProcessScheduler.get().updateProcessesLog();
+            //Updating processes information table in GUI
+            ProcessScheduler.get().updateProcessesLog();
+
+        } catch(ConcurrentModificationException e) {
+            System.out.println("****************************************");
+            System.out.println("***Concurrent Modification Exception!***");
+            System.out.println("****************************************");
+        }
+
     }
     
     private void execute(int newTime) {

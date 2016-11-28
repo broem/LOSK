@@ -132,6 +132,7 @@ public class ProcessScheduler {
     4 = exit
     5 = currently preempted
      */
+    int dotCounter = 0;
 
     public void updateProcessesLog(){
         gui.clearDataArea();
@@ -148,6 +149,19 @@ public class ProcessScheduler {
                 gui.appendDataArea(process.getID() + " : New");
             }
         }
+        switch(dotCounter){
+            case 0:
+                gui.appendDataArea(".");
+                break;
+            case 1:
+                gui.appendDataArea("..");
+                break;
+            case 2:
+                gui.appendDataArea("...");
+                dotCounter=-1;
+                break;
+        }
+        dotCounter++;
     }
     
     public int getState(Process process){
