@@ -45,7 +45,7 @@ public class ProcessScheduler {
 
             readyPCB();
             // if state is running send to CPU
-        if(!CPU.get().processRunning()){ //sets process to waiting if not already done so
+        if(!CPU.get().processRunning() && !readyQueue.isEmpty()){ //sets process to waiting if not already done so
             readyQueue.peekFirst().setProcessState(1);
         }
 
@@ -65,14 +65,16 @@ public class ProcessScheduler {
                 if(readyQueue.peek().getRunTime() ==0){ //this does not account for IO
                     System.out.println("Process " + readyQueue.peek().getID() + " completed at " + Clock.get().getClock());
                     gui.appendLogArea("Process " + readyQueue.peek().getID() + " completed at " + Clock.get().getClock());
+                    Memory.get().addMemoryLeft(readyQueue.peekFirst().getMemoryReq());
                     readyQueue.removeFirst();
+
                 }
 
             }
 //            if(CPU.get().isCpuBusy() && count > 0 && !readyQueue.isEmpty()){ TODO: ASK IF QUANTUM SHOULD BE RESET AFTER IO OR PREEMPTION
 //
 //            }
-            if(count == 0){ // context switch maybe +1 to cycle count?
+            if(count == 0 && !readyQueue.isEmpty()){ // context switch maybe +1 to cycle count?
                 readyQueue.peekFirst().setProcessState(1); //waiting, while waiting everything is paused.
                 roundRobin();
                 count = quantum;

@@ -10,12 +10,12 @@ public class LOSK {
 
     public static void main(String[] args) {
 
-        try {
-            gui = new GUI();
-            gui.setVisible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            gui = new GUI();
+//            gui.setVisible(true);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
 //        int cycle;
 
