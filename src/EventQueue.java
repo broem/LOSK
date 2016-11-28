@@ -5,7 +5,7 @@ import java.util.Comparator;
 public class EventQueue extends CPU {
 
     public Comparator<ECB> comparator = new StartTimeComparator();
-    public PriorityQueue<ECB> osQ = new PriorityQueue<>(100, comparator);
+    public PriorityQueue<ECB> osQ = new PriorityQueue<>(100, comparator); //initial size 100
 
     //singleton since we only ever need one
     private static EventQueue instance = null;

@@ -1,5 +1,6 @@
+import java.util.Comparator;
 import java.util.LinkedList;
-
+import java.util.PriorityQueue;
 /*
  * Schedules according to round robin
  *
@@ -20,22 +21,23 @@ public class ProcessScheduler {
         return instance;
     }
 
+    public Comparator<Process> comparator = new ProcessComparator();
     public LinkedList<Process> readyQueue = new LinkedList<>();
-    public LinkedList<Process> newQueue = new LinkedList<>(); // should check memory before sending to ready
+    public PriorityQueue<Process> newQueue = new PriorityQueue<>(100, comparator);
 
     public void insertPCB(Process process){
         // i think this adds to whatever queue it need to
         if(process.getProcessState() == 0){ //IE new
-            newQueue.addLast(process); // ,maybe pid
+            newQueue.add(process); // ,maybe pid
         }
         
     }
     
     public void readyPCB(){ // this passes from new to ready if theres enough memory in system
         while(!newQueue.isEmpty() && newQueue.peek().getMemoryReq() <= Memory.get().getMemoryLeft()){
-            readyQueue.addLast(newQueue.getFirst()); // check this out make sure FIFO
-            newQueue.removeFirst();
-            Memory.get().removeMemoryLeft(readyQueue.peek().getMemoryReq());
+            readyQueue.addLast(newQueue.poll()); // check this out make sure FIFO
+            //newQueue.removeFirst(); //shouldnt need this anymore
+            Memory.get().removeMemoryLeft(readyQueue.peekLast().getMemoryReq());
             setState(readyQueue.getLast(), 1);
         }
     }
@@ -75,8 +77,13 @@ public class ProcessScheduler {
 //
 //            }
             if(count == 0 && !readyQueue.isEmpty()){ // context switch maybe +1 to cycle count?
-                readyQueue.peekFirst().setProcessState(1); //waiting, while waiting everything is paused.
-                roundRobin();
+
+                if(readyQueue.size() > 1) {
+                    readyQueue.peekFirst().setProcessState(1); //waiting, while waiting everything is paused.
+                    roundRobin();
+                    count = quantum;
+                }
+                else
                 count = quantum;
             }
             //round robin
