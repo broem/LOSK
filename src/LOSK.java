@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.Timer;
 
@@ -25,10 +26,10 @@ public class LOSK {
         gui.appendLogArea("LOSK Running...\n=====");
 
         Timer clockTimer = new Timer();
-        clockTimer.scheduleAtFixedRate(Clock.get(), 1, 1000);
+        clockTimer.scheduleAtFixedRate(Clock.get(), 1, 100);
         //timer.scheduleAtFixedRate(JobReader.get(), 1, 1000);
         Timer cycleTimer = new Timer();
-        cycleTimer.scheduleAtFixedRate(CycleClock.get(), 1, 500);
+        cycleTimer.scheduleAtFixedRate(CycleClock.get(), 1, 100);
         Thread t1 = new Thread(CycleClock.get());
         t1.start();
 

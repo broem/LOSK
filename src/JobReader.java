@@ -34,14 +34,25 @@ public class JobReader {
                     bs = false;
                     break;
                 }
-                String cycleStart = in.next().trim();
-                int cycleToStart = Integer.parseInt(cycleStart);
-                cycleToStart += Clock.get().getClock(); // adjust when read in to clock time
-                String readableID = in.next();
-                in.nextLine();
+                else if(load.equals("LOAD")){
+                    String cycleStart = in.next().trim();
+                    int cycleToStart = Integer.parseInt(cycleStart);
+                    cycleToStart += Clock.get().getClock(); // adjust when read in to clock time
+                    String readableID = in.next();
+                    in.nextLine();
 
-                processByCycle.add(cycleToStart);
-                processByID.add(readableID);
+                    processByCycle.add(cycleToStart);
+                    processByID.add(readableID);
+                }
+                else{
+                    //Clear any of the successfully loaded processes
+                    gui.clearLogArea();
+                    Reset.get().resetAll();
+                    gui.appendLogArea("===Error in job file!===");
+                    gui.appendLogArea("Please correct the error and reload the file!");
+
+                    break;
+                }
 
             }
 

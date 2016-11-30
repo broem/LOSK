@@ -21,7 +21,7 @@ public class InterruptProcessor{
         interrupted = true;
         System.out.println("Interrupt signalled!");
         gui.appendLogArea("LogUpdate: Interrupt signalled!");
-        
+
     }
 
     public void signalPreemption(){

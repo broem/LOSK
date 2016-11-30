@@ -103,12 +103,19 @@ public class GUI extends JFrame {
                         break;
                     case "EXE":
                         if(lastCommand.length == 2) {
-                            String temp = lastCommand[1];
-                            LOSK.setCycle(Integer.parseInt(temp));
-                            CycleClock.get().setCycleStopTime(LOSK.getCycle());
-                            CycleClock.get().setIsRunning(true);
+                            int tempInt = Integer.valueOf(lastCommand[1]);
+                            if(tempInt>0) {
+                                LOSK.setCycle(tempInt);
+                                CycleClock.get().setCycleStopTime(LOSK.getCycle());
+                                CycleClock.get().setIsRunning(true);
+                                appendLogArea("===Executing===");
+                            }
+                            else{
+                                appendLogArea("Please enter non-negative numbers!");
+                                appendLogArea("===Execution Cancelled===");
+                            }
                         }
-                        appendLogArea("===Executing===");
+
                         /*
                         if(lastCommand.length == 2) {
                             exeRunForLength(Integer.parseInt(lastCommand[1]));
@@ -197,6 +204,7 @@ public class GUI extends JFrame {
     public String[] getLastCommand(){
         return lastCommand;
     }
+
 
     public void onEnter(){
         

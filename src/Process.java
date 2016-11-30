@@ -81,8 +81,9 @@ public class Process {
                 base = false;
             }
             else {
-                System.out.println("JOB FILE LINE ERROR");
-                gui.appendLogArea("JOB FILE LINE ERROR");
+                System.out.println("PROGRAM FILE LINE ERROR");
+                gui.appendLogArea("===Program file line error!===");
+                gui.appendLogArea("Please correct the error and reload the job file!");
             }
         }
 
