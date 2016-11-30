@@ -7,6 +7,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.border.Border;
+import javax.swing.text.DefaultCaret;
 
 public class GUI extends JFrame {
 
@@ -48,6 +49,9 @@ public class GUI extends JFrame {
         logAreaScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         logAreaScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         logAreaScrollPane.setBorder(border);
+
+        DefaultCaret caret = (DefaultCaret) logArea.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
         //Text area for general simulation info
         simulationInfoArea = new JTextArea();
