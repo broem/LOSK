@@ -34,11 +34,13 @@ public class ProcessScheduler {
     }
     
     public void readyPCB(){ // this passes from new to ready if theres enough memory in system
-        while(!newQueue.isEmpty() && newQueue.peek().getMemoryReq() <= Memory.get().getMemoryLeft()){
+        if(!newQueue.isEmpty() && newQueue.peek().getMemoryReq() <= Memory.get().getMemoryLeft()){
             readyQueue.addLast(newQueue.poll()); // check this out make sure FIFO
             //newQueue.removeFirst(); //shouldnt need this anymore
             Memory.get().removeMemoryLeft(readyQueue.peekLast().getMemoryReq());
             setState(readyQueue.getLast(), 1);
+            EventSignaller.get().signallProcessLoad();
+            EventSignaller.get().setPid(readyQueue.getLast().getPID());
         }
     }
 
@@ -201,6 +203,13 @@ public class ProcessScheduler {
     
     public void setCPUTime(int setTime){
         Clock.get().setClockTime(setTime);
+    }
+
+    public void reset(){
+        newQueue.clear();
+        readyQueue.clear();
+        quantum =10;
+        count = 10;
     }
     
 }

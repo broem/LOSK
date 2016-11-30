@@ -65,4 +65,9 @@ public class JobReader {
         }
     }
 
+    public void reset(){
+        processByCycle.clear();
+        processByID.clear();
+    }
+
 }

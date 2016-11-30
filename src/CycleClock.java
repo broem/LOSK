@@ -51,4 +51,8 @@ public class CycleClock extends TimerTask {
         cycleStop = clockTime+n;
     }
 
+    public void setClockTime(int n){
+        clockTime = n;
+    }
+
 }

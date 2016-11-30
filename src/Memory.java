@@ -32,4 +32,8 @@ public class Memory extends CPU {
     public int getMemoryLeft() {
         return memoryLeft;
     }
+
+    public void reset(){
+        memoryLeft = 256;
+    }
 }

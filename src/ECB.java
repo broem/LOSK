@@ -34,6 +34,10 @@ public class ECB {
         return begin;
     }
 
+    public int getPid(){
+        return pid;
+    }
+
     public void execute(int x){
         if(burst > 0)
         burst -= x;

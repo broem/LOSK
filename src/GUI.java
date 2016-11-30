@@ -139,6 +139,7 @@ public class GUI extends JFrame {
                     case "RESET":
                         //All unfinished processes are terminated and Clock set to 0
                         clearLogArea();
+                        Reset.get().resetAll();
                         appendLogArea("===\nSimulation Reset\n===");
                         break;
                     case "HELP":

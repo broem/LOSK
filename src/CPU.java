@@ -86,4 +86,10 @@ public class CPU {
     public String getIoRunning(){
         return "hmm";
     }
+
+    public void reset(){
+        cpuBusy = false;
+        ioState = false;
+        isProcessRunning = false;
+    }
 }

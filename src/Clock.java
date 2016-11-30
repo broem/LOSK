@@ -60,4 +60,8 @@ public class Clock extends TimerTask {
         clockTime+=n;
     }
 
+    public void resetClock(){
+        clockTime =0;
+    }
+
 }

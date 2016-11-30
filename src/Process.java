@@ -164,10 +164,6 @@ public class Process {
 
     public void setExe(String exe){ processArray.add(exe);}
 
-//    public int getIOStartTime(){
-//    }
-
-
     public int getProcessState(){
         return processState;
     }
