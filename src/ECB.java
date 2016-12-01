@@ -34,6 +34,10 @@ public class ECB {
         return begin;
     }
 
+    public void setBegin(int n){
+        begin += n;
+    }
+
     public int getPid(){
         return pid;
     }

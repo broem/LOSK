@@ -81,6 +81,7 @@ public class EventQueue extends CPU {
             ECB ecb = iter.next();
 
             if (ecb.getPid() == pid) {
+                ecb.setBegin(CycleClock.get().getCycleTime());
                 osQ.add(ecb);
                 iter.remove();
             }

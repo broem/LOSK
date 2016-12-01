@@ -106,16 +106,25 @@ public class GUI extends JFrame {
 
                         break;
                     case "EXE":
+                        if(lastCommand.length == 1){
+                            CycleClock.get().setIsRunning(true);
+                            CycleClock.get().setCycleStopTime(-1);
+                        }
                         if(lastCommand.length == 2) {
-                            int tempInt = Integer.valueOf(lastCommand[1]);
-                            if(tempInt>0) {
-                                LOSK.setCycle(tempInt);
-                                CycleClock.get().setCycleStopTime(LOSK.getCycle());
-                                CycleClock.get().setIsRunning(true);
-                                appendLogArea("===Executing===");
+                            if(isInteger(lastCommand[1])) {
+                                int tempInt = Integer.valueOf(lastCommand[1]);
+                                if (tempInt > 0) {
+                                    LOSK.setCycle(tempInt);
+                                    CycleClock.get().setCycleStopTime(LOSK.getCycle());
+                                    CycleClock.get().setIsRunning(true);
+                                    appendLogArea("===Executing===");
+                                }
+                                else{
+                                    appendLogArea("We can't go backwards...");
+                                }
                             }
                             else{
-                                appendLogArea("Please enter non-negative numbers!");
+                                appendLogArea("EXE input incorrect!");
                                 appendLogArea("===Execution Cancelled===");
                             }
                         }
@@ -153,10 +162,14 @@ public class GUI extends JFrame {
                         Reset.get().resetAll();
                         appendLogArea("===\nSimulation Reset\n===");
                         break;
+                    case "STOP":
+                        CycleClock.get().setIsRunning(false);
+                        appendLogArea("===\nSimulation Stopped\n===");
+                        break;
                     case "HELP":
                         appendLogArea("===HELP Results===");
                         appendLogArea("List of commands:");
-                        appendLogArea("-LOAD + FileName.txt,\n-EXE + FileName.txt,\n-MEM,\n-EXIT,\n-RESET");
+                        appendLogArea("-LOAD + FileName.txt,\n-EXE + FileName.txt,\n-STOP\n-MEM,\n-EXIT,\n-RESET");
                         appendLogArea("-----");
                         break;
                     default: appendLogArea("Please enter valid command...");
@@ -180,6 +193,16 @@ public class GUI extends JFrame {
 //            timer.cancel();
 //        }
 //    }
+    public boolean isInteger(String s)
+    {
+        try {
+        Integer.parseInt(s);
+        return true;
+    }
+    catch (NumberFormatException ex) {
+        return false;
+    }
+}
 
     public void appendLogArea(String string){
         logArea.append(string+"\n");
