@@ -29,20 +29,27 @@ public class JobReader {
             Scanner in = new Scanner(jobFile);
             while(in.hasNextLine() && bs) {
 
-                String load = in.next();
-                if(load.equals("EXE")){
+                String[] load = in.nextLine().split(" ");
+                if(load[0].equals("EXE")){
                     bs = false;
                     break;
                 }
-                else if(load.equals("LOAD")){
-                    String cycleStart = in.next().trim();
-                    int cycleToStart = Integer.parseInt(cycleStart);
-                    cycleToStart += Clock.get().getClock(); // adjust when read in to clock time
-                    String readableID = in.next();
-                    in.nextLine();
+                else if(load[0].equals("LOAD") && load.length == 3){
+                    int cycleToStart = Integer.parseInt(load[1]);
+                    cycleToStart += Clock.get().getClock();
+                    String readableID = load[2];
 
                     processByCycle.add(cycleToStart);
                     processByID.add(readableID);
+
+//                    String cycleStart = in.next().trim();
+//                    int cycleToStart = Integer.parseInt(cycleStart);
+//                    cycleToStart += Clock.get().getClock(); // adjust when read in to clock time
+//                    String readableID = in.next();
+//                    in.nextLine();
+//
+//                    processByCycle.add(cycleToStart);
+//                    processByID.add(readableID);
                 }
                 else{
                     //Clear any of the successfully loaded processes
