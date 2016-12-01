@@ -8,6 +8,7 @@ public class CPU {
     private static boolean cpuBusy;
     private static boolean ioState;
     private static boolean isProcessRunning;
+    private static boolean interruptHap;
     private static CPU instance = null;
     protected CPU() { cpuBusy = false;
     }
@@ -20,17 +21,22 @@ public class CPU {
 
     public void execute(Process p){ // add quantum to run from here?
         //cpuBusy = true;
-        p.updateRunTime(1); //if in ioState
-        isProcessRunning = true;
-
         if(detectInterrupt()){
             p.setProcessState(1); //waiting/ready
             cpuBusy = true;
+            interruptHap= true;
+            //set some boolean so that we dont update runtime twice in cycle
+
             //ProcessScheduler.get().scheduleExe();
         }
-        if(detectPreemption()){
+        else if(detectPreemption()){
             p.setProcessState(5);
         }
+        else{
+        p.updateRunTime(1); //if in ioState
+        isProcessRunning = true;}
+
+
         }
 
 
@@ -45,16 +51,21 @@ public class CPU {
         if(!ecb.complete()){
         ecb.execute(1);}
         //finish it up
-        if(ecb.complete()){
+
+         if(ecb.complete()){
             InterruptProcessor.get().resetInterrupt(); //combine these two
             InterruptProcessor.get().resetPreemption();
-            EventQueue.get().deQueue(ecb);
+            int toRemove = ecb.getInitialBurst();
+            Process temp =ProcessScheduler.get().findProcessByPID(ecb.getPid());
+            temp.updateRunTime(toRemove);
+
             cpuBusy = false;
             ioState = false;
             if(ecb.getEvent() == 4){
                 System.out.println(ecb.getOutput());
                 gui.appendLogArea(ecb.getOutput());
             }
+             EventQueue.get().deQueue(ecb);
         }
     }
     
@@ -87,9 +98,18 @@ public class CPU {
         return "hmm";
     }
 
+    public boolean didInterruptHappen(){
+        return interruptHap;
+    }
+
+    public void setInterruptHap(){
+        interruptHap = false;
+    }
+
     public void reset(){
         cpuBusy = false;
         ioState = false;
         isProcessRunning = false;
     }
+
 }

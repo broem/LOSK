@@ -4,6 +4,7 @@ public class ECB {
     private int event;
     private int pid;
     private int burst;
+    private int initialBurst;
     private int begin;
     private String output;
 
@@ -13,6 +14,7 @@ public class ECB {
         this.pid = pid;
         this.burst = burst; // this is the duration
         begin = timeBegin; //important for scheduling
+        initialBurst = burst;
     }
 
     public ECB(int event, int pid, int burst, int timeBegin, String output){
@@ -21,12 +23,14 @@ public class ECB {
         this.burst = burst; // this is the duration
         begin = timeBegin; //important for scheduling
         this.output = output;
+        initialBurst = burst;
     }
 
     public String getOutput(){
         return output;
     }
 
+    public int getInitialBurst(){return initialBurst;}
 
     public int getEvent(){return event;}
 

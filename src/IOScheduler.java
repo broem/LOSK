@@ -39,15 +39,27 @@ public class IOScheduler {
             if(EventQueue.get().getSoonestEvent() == 1){
                 InterruptProcessor.get().signalInterrupt();
                 currentlyRunning = EventQueue.get().getSoonest();
+                CPU.get().executeIO(currentlyRunning);
+                if(currentlyRunning.complete()){
+                    currentlyRunning = null;
+                }
                 // not executing here gives a 1 cycle delay for context switch?
             }
             if(EventQueue.get().getSoonestEvent() == 2){
                 InterruptProcessor.get().signalPreemption();
                 currentlyRunning = EventQueue.get().getSoonest();
+                CPU.get().executeIO(currentlyRunning);
+                if(currentlyRunning.complete()){
+                    currentlyRunning = null;
+                }
             }
             if(EventQueue.get().getSoonestEvent() == 4){
                 InterruptProcessor.get().signalInterrupt();
                 currentlyRunning = EventQueue.get().getSoonest();
+                CPU.get().executeIO(currentlyRunning);
+                if(currentlyRunning.complete()){
+                    currentlyRunning = null;
+                }
             }
         }
 

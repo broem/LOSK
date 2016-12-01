@@ -115,23 +115,23 @@ public class Process {
 
     public void setYeild(String yeild){
         processArray.add(yeild);
-        int num = getIoRunTemp() + CycleClock.get().getCycleTime();
+        int num = getRunTime() + CycleClock.get().getCycleTime();
         ECB yeildECB = new ECB(2, getPID(), 1, num); // the passed 1 should be checked later
         //TODO if event == 2 then size of 1 should just be an interrupt
         IOScheduler.get().scheduleIO(yeildECB);
-        setIoRunTemp(1);
+        addRunTime(1);
     }
 
     public void setIO(String IO){
         //ioburst is added to runtime.
 
-        int num = getIoRunTemp() + CycleClock.get().getCycleTime(); // account for added jobs later on
+        int num = getRunTime() + CycleClock.get().getCycleTime(); // account for added jobs later on
         io = IOBurst.get().generateIOBurst();
         processArray.add(IO);
 
         ECB ioECB = new ECB(1, getPID(), io, num); // the set time begin is only valid if process is immediately run
         IOScheduler.get().scheduleIO(ioECB);
-        setIoRunTemp(io);
+        addRunTime(io);
 
     }
 
@@ -163,13 +163,13 @@ public class Process {
         String display = out;
 
 
-        int num = getIoRunTemp() + CycleClock.get().getCycleTime(); // account for added jobs later on
+        int num = getRunTime() + CycleClock.get().getCycleTime(); // account for added jobs later on
         io = IOBurst.get().generateIOBurst();
-        ioRunTemp += io;
+
 
         ECB ioECB = new ECB(4, getPID(), io, num, display);
         IOScheduler.get().scheduleIO(ioECB);
-        setIoRunTemp(io);
+        addRunTime(io);
     }
 
     private void setIoRunTemp(int n){

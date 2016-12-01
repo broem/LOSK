@@ -46,8 +46,15 @@ public class ProcessScheduler {
 
     // Now we need to schedule
     public void scheduleExe(){
-
+            CPU.get().setInterruptHap();
             readyPCB();
+        if(!readyQueue.isEmpty() &&readyQueue.peek().getRunTime() <=0 && !EventQueue.get().isItInThere(readyQueue.peek().getPID())){ //this does not account for IO
+            System.out.println("Process " + readyQueue.peek().getID() + " completed at " + Clock.get().getClock());
+            gui.appendLogArea("Process " + readyQueue.peek().getID() + " completed at " + Clock.get().getClock());
+            Memory.get().addMemoryLeft(readyQueue.peekFirst().getMemoryReq());
+            readyQueue.removeFirst();
+
+        }
             // if state is running send to CPU
         if(!CPU.get().processRunning() && !readyQueue.isEmpty()){ //sets process to waiting if not already done so
             readyQueue.peekFirst().setProcessState(1);
@@ -55,10 +62,10 @@ public class ProcessScheduler {
 
 
             if(!CPU.get().isCpuBusy() && count >0 && !readyQueue.isEmpty()) {
-                if(readyQueue.peekFirst().getProcessState() != 5)
+                if(readyQueue.peekFirst().getProcessState() != 5){
                 readyQueue.peekFirst().setProcessState(2); // for running
                 CPU.get().execute(readyQueue.peekFirst());
-                count--;
+                count--;}
                 if(readyQueue.peekFirst().getProcessState() == 5) //it has been preempted by a YEILD
                 {
                     readyQueue.peekFirst().setProcessState(1);
@@ -66,11 +73,12 @@ public class ProcessScheduler {
                     roundRobin();
                     count = quantum;
                 }
-                if(readyQueue.peek().getRunTime() ==0){ //this does not account for IO
-                    System.out.println("Process " + readyQueue.peek().getID() + " completed at " + Clock.get().getClock());
-                    gui.appendLogArea("Process " + readyQueue.peek().getID() + " completed at " + Clock.get().getClock());
-                    Memory.get().addMemoryLeft(readyQueue.peekFirst().getMemoryReq());
-                    readyQueue.removeFirst();
+                if(readyQueue.peek().getRunTime() ==0){ //this is only when calc is done before io
+                    //System.out.println("Process " + readyQueue.peek().getID() + " completed at " + Clock.get().getClock());
+                    //gui.appendLogArea("Process " + readyQueue.peek().getID() + " completed at " + Clock.get().getClock());
+                    //Memory.get().addMemoryLeft(readyQueue.peekFirst().getMemoryReq());
+                    //readyQueue.removeFirst();
+                    readyQueue.peekFirst().setProcessState(1);
 
                 }
 
@@ -210,6 +218,15 @@ public class ProcessScheduler {
         readyQueue.clear();
         quantum =10;
         count = 10;
+    }
+
+    public Process findProcessByPID(int pid){
+        for(Process p: readyQueue){
+            if(p.getPID() == pid){
+                return p;
+            }
+        }
+        return null;
     }
     
 }

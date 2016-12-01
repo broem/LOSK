@@ -29,6 +29,7 @@ public class CycleClock extends TimerTask {
             }
             clockTime++;
             ProcessScheduler.get().scheduleExe();
+            if(!CPU.get().didInterruptHappen())
             IOScheduler.get().startIO();
 
         }
