@@ -38,8 +38,8 @@ public class ECB {
         return begin;
     }
 
-    public void setBegin(int n){
-        begin += n;
+    public void setBegin(){
+        begin = begin+(begin - CycleClock.get().getCycleTime());
     }
 
     public int getPid(){

@@ -43,14 +43,6 @@ public class InterruptProcessor{
     public void resetInterrupt(){
         interrupted = false;
     }
-
-    // not sure if cycle time/ event time
-//    public void scanEventQueue(){
-//
-//        for(ECB e: EventQueue.get().osQ){
-//            if(e.)
-//        }
-//    }
     
     public void addEvent(ECB event){
         EventQueue.get().enQueue(event);

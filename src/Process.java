@@ -157,7 +157,6 @@ public class Process {
     }
 
     public void setOut(String out){
-        //TODO this should be an IO but does it get the generated burst time or just 1 cycle to display?
         processArray.add(out);
 
         String display = out;

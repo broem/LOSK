@@ -33,15 +33,6 @@ public class EventQueue extends CPU {
         return osQ.peek().getEvent();
     }
 
-//    public ECB getEventWithCycleTime(int lookingFor, int cycleTime){ //this needs to be looked at for IO buildups
-//        for(ECB event: osQ){
-//            if(event.getEvent() == lookingFor && event.getBegin() == cycleTime){
-//                return event;
-//            }
-//        }
-//        return null; // this should never return null since we've already assured the existance
-//    }
-
     public ECB getSoonest(){
         return osQ.element();
     }
@@ -81,7 +72,7 @@ public class EventQueue extends CPU {
             ECB ecb = iter.next();
 
             if (ecb.getPid() == pid) {
-                ecb.setBegin(CycleClock.get().getCycleTime());
+                ecb.setBegin(); // this is where me error is! it may not even be needed
                 osQ.add(ecb);
                 iter.remove();
             }

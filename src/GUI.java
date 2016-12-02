@@ -128,15 +128,6 @@ public class GUI extends JFrame {
                                 appendLogArea("===Execution Cancelled===");
                             }
                         }
-
-                        /*
-                        if(lastCommand.length == 2) {
-                            exeRunForLength(Integer.parseInt(lastCommand[1]));
-                        }
-                        appendLogArea("");
-                        ProcessScheduler.get().scheduleExe();
-                        // add runnable in here for the step portion, or if solo then just run!
-                        */
                         break;
                     case "PROC":
                         appendLogArea("===PROC Results===");
@@ -184,15 +175,6 @@ public class GUI extends JFrame {
         appendLogArea("Exiting LOSK...");
         System.exit(0);
     }
-
-//    public static void exeRunForLength(int cycles){
-//        java.util.Timer timer = new java.util.Timer();
-//        timer.scheduleAtFixedRate(CycleClock.get(), 1, 1000);
-//
-//        if(CycleClock.get().getCycleTime() == cycles){
-//            timer.cancel();
-//        }
-//    }
     public boolean isInteger(String s)
     {
         try {

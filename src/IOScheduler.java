@@ -5,6 +5,7 @@ public class IOScheduler {
     //creates ECB
     //singleton since we only ever need one
     private ECB currentlyRunning;
+    private boolean justFinished;
     private static IOScheduler instance = null;
     protected IOScheduler() {
     }
@@ -33,9 +34,12 @@ public class IOScheduler {
             CPU.get().executeIO(currentlyRunning);
             if(currentlyRunning.complete()){
                 currentlyRunning = null;
+                //maybe a check here?
+                justFinished = true;
+
             }
         }
-        if(currentlyRunning == null && !EventQueue.get().isEmpty() && CycleClock.get().getCycleTime() >= EventQueue.get().getSoonestTime()){
+        if(currentlyRunning == null && !EventQueue.get().isEmpty() && CycleClock.get().getCycleTime() >= EventQueue.get().getSoonestTime() && !justFinished){
             if(EventQueue.get().getSoonestEvent() == 1){
                 InterruptProcessor.get().signalInterrupt();
                 currentlyRunning = EventQueue.get().getSoonest();
@@ -45,7 +49,7 @@ public class IOScheduler {
                 }
                 // not executing here gives a 1 cycle delay for context switch?
             }
-            if(EventQueue.get().getSoonestEvent() == 2){
+            if(!EventQueue.get().isEmpty() && EventQueue.get().getSoonestEvent() == 2){
                 InterruptProcessor.get().signalPreemption();
                 currentlyRunning = EventQueue.get().getSoonest();
                 CPU.get().executeIO(currentlyRunning);
@@ -53,7 +57,7 @@ public class IOScheduler {
                     currentlyRunning = null;
                 }
             }
-            if(EventQueue.get().getSoonestEvent() == 4){
+            if(!EventQueue.get().isEmpty() && EventQueue.get().getSoonestEvent() == 4){
                 InterruptProcessor.get().signalInterrupt();
                 currentlyRunning = EventQueue.get().getSoonest();
                 CPU.get().executeIO(currentlyRunning);
@@ -62,6 +66,7 @@ public class IOScheduler {
                 }
             }
         }
+        justFinished = false;
 
         }
 }

@@ -29,7 +29,7 @@ public class LOSK {
         clockTimer.scheduleAtFixedRate(Clock.get(), 1, 1000);
         //timer.scheduleAtFixedRate(JobReader.get(), 1, 1000);
         Timer cycleTimer = new Timer();
-        cycleTimer.scheduleAtFixedRate(CycleClock.get(), 1, 500);
+        cycleTimer.scheduleAtFixedRate(CycleClock.get(), 1, 100);
         Thread t1 = new Thread(CycleClock.get());
         t1.start();
 

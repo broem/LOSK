@@ -30,8 +30,8 @@ public class Clock extends TimerTask {
         try {
             gui.clearSimulationInfoArea();
             gui.appendSimulationInfoArea(Clock.get().getClock() + " Clock time");
-            gui.appendSimulationInfoArea(ProcessScheduler.get().processesCurrentlyWaiting());
             gui.appendSimulationInfoArea(ProcessScheduler.get().processesInNew());
+            gui.appendSimulationInfoArea(ProcessScheduler.get().processesCurrentlyWaiting());
             gui.appendSimulationInfoArea(ProcessScheduler.get().processRunning());
             gui.appendSimulationInfoArea("Cycle time: " + CycleClock.get().getCycleTime());
             gui.appendSimulationInfoArea("Memory left: " + Memory.get().getMemoryLeft());

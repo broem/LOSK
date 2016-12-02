@@ -1,7 +1,0 @@
-150
-CALC 30
-IO
-CALC 40
-YEILD
-OUT "hello"
-EXE

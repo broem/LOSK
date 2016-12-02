@@ -36,7 +36,6 @@ public class ProcessScheduler {
     public void readyPCB(){ // this passes from new to ready if theres enough memory in system
         if(!newQueue.isEmpty() && newQueue.peek().getMemoryReq() <= Memory.get().getMemoryLeft()){
             readyQueue.addLast(newQueue.poll()); // check this out make sure FIFO
-            //newQueue.removeFirst(); //shouldnt need this anymore
             Memory.get().removeMemoryLeft(readyQueue.peekLast().getMemoryReq());
             setState(readyQueue.getLast(), 1);
             EventSignaller.get().signallProcessLoad();
@@ -74,20 +73,12 @@ public class ProcessScheduler {
                     count = quantum;
                 }
                 if(readyQueue.peek().getRunTime() ==0){ //this is only when calc is done before io
-                    //System.out.println("Process " + readyQueue.peek().getID() + " completed at " + Clock.get().getClock());
-                    //gui.appendLogArea("Process " + readyQueue.peek().getID() + " completed at " + Clock.get().getClock());
-                    //Memory.get().addMemoryLeft(readyQueue.peekFirst().getMemoryReq());
-                    //readyQueue.removeFirst();
                     readyQueue.peekFirst().setProcessState(1);
 
                 }
 
             }
-//            if(CPU.get().isCpuBusy() && count > 0 && !readyQueue.isEmpty()){ TODO: ASK IF QUANTUM SHOULD BE RESET AFTER IO OR PREEMPTION
-//
-//            }
             if(count == 0 && !readyQueue.isEmpty()){ // context switch maybe +1 to cycle count?
-
                 if(readyQueue.size() > 1) {
                     readyQueue.peekFirst().setProcessState(1); //waiting, while waiting everything is paused.
                     roundRobin();
@@ -199,7 +190,7 @@ public class ProcessScheduler {
     
     public int getArrival(){
         return Clock.get().getClock();
-    } // i guess this is used for....priority
+    } // i want aging!
     
     public void setArrival(int arrive){
         
